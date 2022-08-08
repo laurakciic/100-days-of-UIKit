@@ -28,10 +28,10 @@ class ViewController: UITableViewController {
         for item in items {
             if item.hasPrefix("nssl") {
                 pictures.append(item)
-                pictures.sort()
                 
             }
         }
+        pictures.sort()
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {  // auto completion: numberof
