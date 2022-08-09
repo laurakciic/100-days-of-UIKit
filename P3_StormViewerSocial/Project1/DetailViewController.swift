@@ -48,7 +48,7 @@ class DetailViewController: UIViewController {
         }
         
         // UIActivityViewController says what to share
-        let vc = UIActivityViewController(activityItems: [image], applicationActivities: [])    // creates activity view controller saying here's the thing I want to share - image, we can also provide application acitivites to show alongside system options
+        let vc = UIActivityViewController(activityItems: [image, selectedImage ?? "error fetching name"], applicationActivities: [])    // creates activity view controller saying here's the thing I want to share - image, we can also provide application acitivites to show alongside system options
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem     // on ipad UI activity view controller must be shown from somewhere on the screen and that's reffered to as it's popoverPresentationController which made this thing appear on the screen, we're saying this thing was shown from a bar button item and telling it it's out right bar button item or iPad has to be shown attached to the bar button item so you can see where it came from and tap away to dismiss it
         present(vc, animated: true) // to show finished UI acitivity view controller ready to go on the screen
     }
