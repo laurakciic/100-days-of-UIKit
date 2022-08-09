@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     var countries     = [String]()
     var score         = 0
     var correctAnswer = 0
+    var tapCounter    = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +46,19 @@ class ViewController: UIViewController {
         
         title = countries[correctAnswer].uppercased() + "  score: \(score)"
         
+        if tapCounter == 10 {
+            
+            let finalScoreAlert = UIAlertController(title: title, message: "This was round 10, your final score is \(score)", preferredStyle: .alert)
+            
+            finalScoreAlert.addAction(UIAlertAction(title: "New round", style: .default, handler: askQuestion))
+            
+            present(finalScoreAlert, animated: true)
+            
+            score = 0
+            tapCounter = 0
+            
+        }
     }
-    
     
     @IBAction func btnTapped(_ sender: UIButton) {
         var title: String
@@ -59,11 +71,14 @@ class ViewController: UIViewController {
             score -= 1
         }
         
-        let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)     // .alert brings message box across the screen -> situation change, alternative is action sheet which slides in up from the bottom -> choosing options
+        let scoreAlert = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)     // .alert brings message box across the screen -> situation change, alternative is action sheet which slides in up from the bottom -> choosing options
         
-        ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))   // uses UIAlertAction that addes button to the alert that says continue, styles: default, cancel, destructive, handler looks for a closure (code that can be exc when btn is tapped, we want to continue the game so we pass askQuestion
+        scoreAlert.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))   // uses UIAlertAction that addes button to the alert that says continue, styles: default, cancel, destructive, handler looks for a closure (code that can be exc when btn is tapped, we want to continue the game so we pass askQuestion
         
-        present(ac, animated: true)     // 2 params: a view controller to present and whether to animate presentation, optional 3rd param to call a closure when pres animation finishes
+        present(scoreAlert, animated: true)     // 2 params: a view controller to present and whether to animate presentation, optional 3rd param to call a closure when pres animation finishes
+    
+    
+        tapCounter += 1
     }
     
     
