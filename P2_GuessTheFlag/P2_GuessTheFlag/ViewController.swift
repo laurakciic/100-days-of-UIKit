@@ -35,7 +35,7 @@ class ViewController: UIViewController {
         askQuestion()
     }
 
-    func askQuestion() {
+    func askQuestion(action: UIAlertAction! = nil) {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
         
@@ -46,6 +46,25 @@ class ViewController: UIViewController {
         title = countries[correctAnswer].uppercased()
     }
     
-
+    
+    @IBAction func btnTapped(_ sender: UIButton) {
+        var title: String
+        
+        if sender.tag == correctAnswer {
+            title = "Correct!"
+            score += 1
+        } else {
+            title  = "Wrong"
+            score -= 1
+        }
+        
+        let ac = UIAlertController(title: title, message: "Your score is \(score)", preferredStyle: .alert)     // .alert brings message box across the screen -> situation change, alternative is action sheet which slides in up from the bottom -> choosing options
+        
+        ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))   // uses UIAlertAction that addes button to the alert that says continue, styles: default, cancel, destructive, handler looks for a closure (code that can be exc when btn is tapped, we want to continue the game so we pass askQuestion
+        
+        present(ac, animated: true)     // 2 params: a view controller to present and whether to animate presentation, optional 3rd param to call a closure when pres animation finishes
+    }
+    
+    
 }
 
