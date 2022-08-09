@@ -22,6 +22,8 @@ class ViewController: UITableViewController {
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(recommendApp))
+        
         let fm    = FileManager.default                          // will be used to look for files
         let path  = Bundle.main.resourcePath!                    // tell me where I can find images I added to my app
         let items = try! fm.contentsOfDirectory(atPath: path)    // will be an array of strings containing filenames, items is set to the contents of the dir at path
@@ -59,6 +61,16 @@ class ViewController: UITableViewController {
             
             navigationController?.pushViewController(vc, animated: true)                                        // shows the screen, push the detail VC onto the navigation controller 
         }
+    }
+    
+    @objc func recommendApp() {
+        
+        let shareNote = "Share app with friends!"
+        
+        let shareNoteAVC = UIActivityViewController(activityItems: [shareNote], applicationActivities: [])
+        shareNoteAVC.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(shareNoteAVC, animated: true)
+        
     }
 
 }
