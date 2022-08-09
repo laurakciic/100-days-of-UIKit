@@ -43,7 +43,8 @@ class ViewController: UIViewController {
         btn2.setImage(UIImage(named: countries[1]), for: .normal)
         btn3.setImage(UIImage(named: countries[2]), for: .normal)
         
-        title = countries[correctAnswer].uppercased()
+        title = countries[correctAnswer].uppercased() + "  score: \(score)"
+        
     }
     
     
