@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "score", style: UIBarButtonItem.Style.plain, target: self, action: #selector(showScore))
+        
         countries += ["estonia", "france", "germany", "ireland",
                       "italy", "monaco", "nigeria", "poland",
                       "russia", "spain", "uk", "us"]
@@ -87,6 +89,14 @@ class ViewController: UIViewController {
         present(scoreAlert, animated: true)     // 2 params: a view controller to present and whether to animate presentation, optional 3rd param to call a closure when pres animation finishes
     
         tapCounter += 1
+    }
+    
+    @objc func showScore() {
+        
+        let showScoreAlert = UIAlertController(title: nil, message: "Your score is \(score)", preferredStyle: .actionSheet)
+        showScoreAlert.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
+        present(showScoreAlert, animated: true)
+        
     }
     
     
