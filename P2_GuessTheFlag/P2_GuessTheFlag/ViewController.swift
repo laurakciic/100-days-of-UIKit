@@ -58,16 +58,25 @@ class ViewController: UIViewController {
             tapCounter = 0
             
         }
+        
+        
     }
     
     @IBAction func btnTapped(_ sender: UIButton) {
         var title: String
+        let correctFlag = countries[correctAnswer].capitalized
         
         if sender.tag == correctAnswer {
             title = "Correct!"
             score += 1
         } else {
             title  = "Wrong"
+            
+            let wrongFlagAlert = UIAlertController(title: title, message: "That's the flag of \(correctFlag)", preferredStyle: .alert)
+            
+            wrongFlagAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: askQuestion))
+            present(wrongFlagAlert, animated: true)
+            
             score -= 1
         }
         
@@ -76,7 +85,6 @@ class ViewController: UIViewController {
         scoreAlert.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))   // uses UIAlertAction that addes button to the alert that says continue, styles: default, cancel, destructive, handler looks for a closure (code that can be exc when btn is tapped, we want to continue the game so we pass askQuestion
         
         present(scoreAlert, animated: true)     // 2 params: a view controller to present and whether to animate presentation, optional 3rd param to call a closure when pres animation finishes
-    
     
         tapCounter += 1
     }
