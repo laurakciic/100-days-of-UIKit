@@ -45,16 +45,16 @@ class ViewController: UIViewController, WKNavigationDelegate {
 
     @objc func openTapped() {
         
-        let alert = UIAlertController(title: "Open page...", message: nil, preferredStyle: .actionSheet)
+        let openPageAlert = UIAlertController(title: "Open page...", message: nil, preferredStyle: .actionSheet)
         
         for website in websites {
-            alert.addAction(UIAlertAction(title: website, style: .default, handler: openPage))
+            openPageAlert.addAction(UIAlertAction(title: website, style: .default, handler: openPage))
         }
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        openPageAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
-        alert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem  // attach to iPads
-        present(alert, animated: true)
+        openPageAlert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem  // attach to iPads
+        present(openPageAlert, animated: true)
     }
     
     func openPage(action: UIAlertAction) {                                    // selected by user
@@ -86,8 +86,12 @@ class ViewController: UIViewController, WKNavigationDelegate {
                 }
             }
         }
+        let unsafeURLAlert = UIAlertController(title: "Warning", message: "URL blocked", preferredStyle: .alert)
+        unsafeURLAlert.addAction(UIAlertAction(title: "Okay", style: .cancel))
+        unsafeURLAlert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(unsafeURLAlert, animated: true)
         
         decisionHandler(.cancel)                   // only called in something from above fails
     }                                              // negative response for decision handler closure, disallow loading
 }
-
+   
