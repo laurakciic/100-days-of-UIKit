@@ -7,12 +7,14 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UITableViewController {
 
     var flags = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Countries"
         
         let fm = FileManager.default
         let path = Bundle.main.resourcePath!
@@ -25,6 +27,17 @@ class ViewController: UIViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return flags.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Flag", for: indexPath)
+        cell.textLabel?.text = flags[indexPath.row].capitalized
+        
+        return cell
+    }
 
 }
 
