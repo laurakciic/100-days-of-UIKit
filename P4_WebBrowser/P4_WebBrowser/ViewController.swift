@@ -27,12 +27,14 @@ class ViewController: UIViewController, WKNavigationDelegate {
         
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))
+        let back = UIBarButtonItem(barButtonSystemItem: .undo, target: webView, action: #selector(webView.goBack))
+        let forward = UIBarButtonItem(barButtonSystemItem: .fastForward, target: webView, action: #selector(webView.goForward))
         
         progressView = UIProgressView(progressViewStyle: .default)          // new UIProgressView instance with default style, .default or .bar
         progressView.sizeToFit()                                            // as much space as need to show progress view
         let progressButton = UIBarButtonItem(customView: progressView)      // creates new UIBarButton item using custom view intializer - wrap up progress view in a bar button item so it can go in toolbar
         
-        toolbarItems = [progressButton, spacer, refresh]
+        toolbarItems = [progressButton, spacer, refresh, back, forward]
         navigationController?.isToolbarHidden = false
         
         // who we want to observe - self, what property we want to observe - estimatedProgress, which value we want -new, and a context value
