@@ -12,6 +12,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
 
     var webView: WKWebView!
     var progressView: UIProgressView!
+    var websites = ["apple.com", "hackingwithswift.com"]
     
     override func loadView() {
         webView = WKWebView()
@@ -24,8 +25,8 @@ class ViewController: UIViewController, WKNavigationDelegate {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Open", style: .plain, target: self, action: #selector(openTapped))
         
-        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)                         //
-        let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))    //
+        let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))
         
         progressView = UIProgressView(progressViewStyle: .default)          // new UIProgressView instance with default style, .default or .bar
         progressView.sizeToFit()                                            // as much space as need to show progress view
@@ -37,7 +38,7 @@ class ViewController: UIViewController, WKNavigationDelegate {
         // who we want to observe - self, what property we want to observe - estimatedProgress, which value we want -new, and a context value
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.estimatedProgress), options: .new, context: nil)
         
-        let url = URL(string: "https://www.hackingwithswift.com")!
+        let url = URL(string: "https://" + websites[1])!
         webView.load(URLRequest(url: url))
         webView.allowsBackForwardNavigationGestures = true
     }
@@ -45,8 +46,11 @@ class ViewController: UIViewController, WKNavigationDelegate {
     @objc func openTapped() {
         
         let alert = UIAlertController(title: "Open page...", message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "apple.com", style: .default, handler: openPage))
-        alert.addAction(UIAlertAction(title: "hackingwithswift.comm", style: .default, handler: openPage))
+        
+        for website in websites {
+            alert.addAction(UIAlertAction(title: website, style: .default, handler: openPage))
+        }
+        
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         
         alert.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem  // attach to iPads
@@ -69,5 +73,21 @@ class ViewController: UIViewController, WKNavigationDelegate {
             progressView.progress = Float(webView.estimatedProgress)
         }
     }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {      // closure, @escaping because closure might be used later on
+        
+        let url = navigationAction.request.url     // const url equal to url of navigation, bc code easier to read
+        
+        if let host = url?.host {                  // unwrap value of the optional url.host bc not all urls have hosts
+            for website in websites {              // loop through all sites in safe list
+                if host.contains(website) {        // does each safe website exists somewhere in the host name
+                    decisionHandler(.allow)        // if yes, call decision handler closure with positive response
+                    return                         // if everything is succesful, safe exit from method
+                }
+            }
+        }
+        
+        decisionHandler(.cancel)                   // only called in something from above fails
+    }                                              // negative response for decision handler closure, disallow loading
 }
 
