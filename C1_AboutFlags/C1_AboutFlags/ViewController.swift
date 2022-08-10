@@ -36,6 +36,14 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Flag", for: indexPath)
         cell.textLabel?.text = flags[indexPath.row].capitalized
         
+        /*
+        if let viewController = storyboard?.instantiateViewController(withIdentifier: "Detail") as? DetailViewController {
+            
+            cell.imageView?.image = viewController.imageView.image
+            
+            navigationController?.pushViewController(viewController, animated: true)
+        }*/
+        
         return cell
     }
     
