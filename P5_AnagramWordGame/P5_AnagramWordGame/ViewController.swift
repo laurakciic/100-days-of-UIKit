@@ -53,8 +53,8 @@ class ViewController: UITableViewController {
         ac.addTextField()
         
         let submitAction = UIAlertAction(title: "Submit", style: .default) {    // closure instead of handler with trailing syntax
-            [weak self, weak ac] _ in                                      // both alert controller and view controller are referenced inside closure so they need to be weakly referenced -> ac? i self?
-            guard let answer = ac?.textFields?[0].text else { return }     // body of closure
+            [weak self, weak ac] _ in                                           // both alert controller and view controller are referenced inside closure so they need to be weakly referenced -> ac? i self?
+            guard let answer = ac?.textFields?[0].text else { return }          // body of closure
             self?.submit(answer)
         }
         
@@ -63,7 +63,31 @@ class ViewController: UITableViewController {
     }
     
     func submit(_ answer: String) {
-        
+        let lowerAnswer = answer.lowercased()
+            
+        if isPossible(word: lowerAnswer) {
+            if isOriginal(word: lowerAnswer) {                                  // not used before
+                if isReal(word: lowerAnswer)    {
+                    usedWords.insert(answer, at: 0)                             // insert in usedWords array at 0 - top position of table view
+                    
+                    let indexPath = IndexPath(row: 0, section: 0)               // ask table view to insert a row at that position - top
+                    tableView.insertRows(at: [indexPath], with: .automatic)
+                }
+            }
+        }
     }
+    
+    func isPossible(word: String) -> Bool {
+        return true
+    }
+    
+    func isOriginal(word: String) -> Bool {
+        return true
+    }
+    
+    func isReal(word: String) -> Bool {
+        return true
+    }
+
 }
 
