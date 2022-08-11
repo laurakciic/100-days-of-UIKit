@@ -82,7 +82,7 @@ class ViewController: UITableViewController {
                     errorMessage = "You can't just make them up!"
                 }
             } else {
-                errorTitle = "Word not already used"
+                errorTitle = "Word already used"
                 errorMessage = "Be more original!"
             }
         } else {
@@ -120,10 +120,22 @@ class ViewController: UITableViewController {
         let range   = NSRange(location: 0, length: word.utf16.count)                                                                // start from zero and scan full length of the word, word.utf16.count for UIKit, SpriteKit and other
         let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")     // 5 params but we only care for first 2 and last one, 1: string to scan, 2: how much of the word to scan - full, last one: language to check dictionary
         
+        if misspelledRange.location == NSNotFound {
+            return false
+        } else {
+            for letter in word {
+                if letter.utf16.count < 3 {
+                    return false
+                }
+            }
+            
+            return true
+        }
+         
         // calling rangeOfMisspelledWord returns NS structure which tells us where the misspelling was found
         // we care about whether any misspelling was found
         // if nothing was found NSRange will have a special location NSNotFound
-        return misspelledRange.location == NSNotFound
+        //return misspelledRange.location == NSNotFound
     }
 
 }
