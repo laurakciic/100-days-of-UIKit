@@ -100,6 +100,10 @@ class ViewController: UITableViewController {
     func isPossible(word: String) -> Bool {
         guard var tempWord = title?.lowercased() else { return false }          // make sure we have a title in nav controller, bring it out and lowercase it and put it into a temporary word
         
+        if (tempWord == word) {
+            return false
+        }
+        
         for letter in word {
             if let position = tempWord.firstIndex(of: letter) {                 // cat - c, a, t will be found for the first time in tempWord
                 tempWord.remove(at: position)                                   // if letter was found in the string, remove it from tempWord
@@ -137,6 +141,5 @@ class ViewController: UITableViewController {
         // if nothing was found NSRange will have a special location NSNotFound
         //return misspelledRange.location == NSNotFound
     }
-
 }
 
