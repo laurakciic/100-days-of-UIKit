@@ -78,15 +78,32 @@ class ViewController: UITableViewController {
     }
     
     func isPossible(word: String) -> Bool {
-        return true
+        guard var tempWord = title?.lowercased() else { return false }          // make sure we have a title in nav controller, bring it out and lowercase it and put it into a temporary word
+        
+        for letter in word {
+            if let position = tempWord.firstIndex(of: letter) {                 // cat - c, a, t will be found for the first time in tempWord
+                tempWord.remove(at: position)                                   // if letter was found in the string, remove it from tempWord
+            } else {
+                return false                                                    // if any letter isn't found or used more than possible
+            }
+        }
+        
+        return true                                                             // only if every letter in the user's word was found in the start word no more than once
     }
     
     func isOriginal(word: String) -> Bool {
-        return true
+        return !usedWords.contains(word)        // returns false if usedWords contains the word
     }
     
     func isReal(word: String) -> Bool {
-        return true
+        let checker = UITextChecker()                                                                                               // from UIKit, doesn't play well with swift strings
+        let range   = NSRange(location: 0, length: word.utf16.count)                                                                // start from zero and scan full length of the word, word.utf16.count for UIKit, SpriteKit and other
+        let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")     // 5 params but we only care for first 2 and last one, 1: string to scan, 2: how much of the word to scan - full, last one: language to check dictionary
+        
+        // calling rangeOfMisspelledWord returns NS structure which tells us where the misspelling was found
+        // we care about whether any misspelling was found
+        // if nothing was found NSRange will have a special location NSNotFound
+        return misspelledRange.location == NSNotFound
     }
 
 }
