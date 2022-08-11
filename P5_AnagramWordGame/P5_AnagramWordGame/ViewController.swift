@@ -12,10 +12,14 @@ class ViewController: UITableViewController {
     var allWords  = [String]()
     var usedWords = [String]()
     
+    var errorTitle: String = ""
+    var errorMessage: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(startGame))
 
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
             if let startWords = try? String(contentsOf: startWordsURL) {                        // load into startWords
@@ -31,7 +35,7 @@ class ViewController: UITableViewController {
     }
 
 
-    func startGame() {
+    @objc func startGame() {
         title = allWords.randomElement()                // title of VC
         usedWords.removeAll(keepingCapacity: true)      // removes all values from usedWords array, bc it will be used to store user's answers, also making sure when new round comes up, old guesses are removed
         tableView.reloadData()                          // reload all rows and sections - great for changing lvl's in game
@@ -65,9 +69,6 @@ class ViewController: UITableViewController {
     func submit(_ answer: String) {
         let lowerAnswer = answer.lowercased()
         
-        let errorTitle: String
-        let errorMessage: String
-            
         if isPossible(word: lowerAnswer) {
             if isOriginal(word: lowerAnswer) {                                  // not used before
                 if isReal(word: lowerAnswer)    {
@@ -78,23 +79,15 @@ class ViewController: UITableViewController {
                     
                     return
                 }  else {
-                    errorTitle = "Word not recognised"
-                    errorMessage = "You can't just make them up!"
+                    showErrorMessage(errorTitle: "Word not recognised", errorMessage: "You can't just make them up!")
                 }
             } else {
-                errorTitle = "Word already used"
-                errorMessage = "Be more original!"
+                showErrorMessage(errorTitle: "Word already used", errorMessage: "Be more original!")
             }
         } else {
             guard let title = title else { return }                             // altough title will always be there
-            
-            errorTitle = "Word not possible"
-            errorMessage = "You can't spell that word from \(title.lowercased())"
+            showErrorMessage(errorTitle: "Word not possible", errorMessage: "You can't spell that word from \(title.lowercased())")
         }
-        
-        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        present(ac, animated: true)
     }
     
     func isPossible(word: String) -> Bool {
@@ -124,22 +117,22 @@ class ViewController: UITableViewController {
         let range   = NSRange(location: 0, length: word.utf16.count)                                                                // start from zero and scan full length of the word, word.utf16.count for UIKit, SpriteKit and other
         let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")     // 5 params but we only care for first 2 and last one, 1: string to scan, 2: how much of the word to scan - full, last one: language to check dictionary
         
-        if misspelledRange.location == NSNotFound {
+        if word.count < 3 {
             return false
-        } else {
-            for letter in word {
-                if letter.utf16.count < 3 {
-                    return false
-                }
-            }
-            
-            return true
         }
          
         // calling rangeOfMisspelledWord returns NS structure which tells us where the misspelling was found
         // we care about whether any misspelling was found
         // if nothing was found NSRange will have a special location NSNotFound
-        //return misspelledRange.location == NSNotFound
+        return misspelledRange.location == NSNotFound
+    }
+    
+    func showErrorMessage(errorTitle: String, errorMessage: String) {
+        
+        let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
+        
     }
 }
 
