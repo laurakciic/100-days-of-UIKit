@@ -45,6 +45,12 @@ class ViewController: UITableViewController {
         cell.detailTextLabel?.text = petition.body
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let detailVC = DetailViewController()                                         // directly, no storyboards
+        detailVC.detailItem = petitions[indexPath.row]                                // whichever user taps
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
 
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D305969028ABEAF700859FFF /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D305968F28ABEAF700859FFF /* DetailViewController.swift */; };
 		D3994FE128AB94F40042B5C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3994FE028AB94F40042B5C6 /* AppDelegate.swift */; };
 		D3994FE328AB94F40042B5C6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3994FE228AB94F40042B5C6 /* SceneDelegate.swift */; };
 		D3994FE528AB94F40042B5C6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3994FE428AB94F40042B5C6 /* ViewController.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D305968F28ABEAF700859FFF /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		D3994FDD28AB94F40042B5C6 /* P7_WhiteHouseFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = P7_WhiteHouseFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3994FE028AB94F40042B5C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D3994FE228AB94F40042B5C6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				D3994FE028AB94F40042B5C6 /* AppDelegate.swift */,
 				D3994FE228AB94F40042B5C6 /* SceneDelegate.swift */,
 				D3994FE428AB94F40042B5C6 /* ViewController.swift */,
+				D305968F28ABEAF700859FFF /* DetailViewController.swift */,
 				D3EA1B9E28ABA505002F576C /* Petition.swift */,
 				D3EA1B9C28ABA072002F576C /* Petitions.swift */,
 				D3994FE628AB94F40042B5C6 /* Main.storyboard */,
@@ -147,6 +150,7 @@
 				D3EA1B9F28ABA505002F576C /* Petition.swift in Sources */,
 				D3994FE528AB94F40042B5C6 /* ViewController.swift in Sources */,
 				D3994FE128AB94F40042B5C6 /* AppDelegate.swift in Sources */,
+				D305969028ABEAF700859FFF /* DetailViewController.swift in Sources */,
 				D3994FE328AB94F40042B5C6 /* SceneDelegate.swift in Sources */,
 				D3EA1B9D28ABA072002F576C /* Petitions.swift in Sources */,
 			);
