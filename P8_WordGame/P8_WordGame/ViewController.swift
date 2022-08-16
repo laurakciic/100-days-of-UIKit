@@ -39,6 +39,14 @@ class ViewController: UIViewController {
         answerLabel.numberOfLines = 0
         view.addSubview(answerLabel)
         
+        currentAnswer = UITextField()
+        currentAnswer.translatesAutoresizingMaskIntoConstraints = false
+        currentAnswer.placeholder = "Tap letters to guess"
+        currentAnswer.textAlignment = .center
+        currentAnswer.font = UIFont.systemFont(ofSize: 44)
+        currentAnswer.isUserInteractionEnabled = false                 // so they can't activate the textbox
+        view.addSubview(currentAnswer)
+        
         NSLayoutConstraint.activate([
             scoreLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),               // layoutMarginsGuide - scoreLabel will have distance from the right edges
             scoreLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
@@ -50,8 +58,11 @@ class ViewController: UIViewController {
             answerLabel.topAnchor.constraint(equalTo: scoreLabel.bottomAnchor),
             answerLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: -100),             // pull it in from the right edge
             answerLabel.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.4, constant: -100),
-            answerLabel.heightAnchor.constraint(equalTo: cluesLabel.heightAnchor)    // match the height of the clues label so they stay the same no matter what
+            answerLabel.heightAnchor.constraint(equalTo: cluesLabel.heightAnchor),                     // match the height of the clues label so they stay the same no matter what
             
+            currentAnswer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            currentAnswer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),          // half the width of the screen
+            currentAnswer.topAnchor.constraint(equalTo: cluesLabel.bottomAnchor, constant: 20)         // 20 points below the clues label
             
             // more constraints will be here
         ])
