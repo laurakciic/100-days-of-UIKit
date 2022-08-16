@@ -20,7 +20,7 @@ class ViewController: UITableViewController {
         start()
     }
     
-    @objc func start() {
+    @objc func start(action: UIAlertAction! = nil) {
         title = "Shopping List"
         shoppingList.removeAll(keepingCapacity: true)
         tableView.reloadData()
@@ -46,13 +46,19 @@ class ViewController: UITableViewController {
             guard let input = enterAlert?.textFields?[0].text else { return }
             self?.submitInput(input)
         }
-        
         enterAlert.addAction(submitAction)
+        
+        //enterAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: start))
+        
+        
         present(enterAlert, animated: true)
     }
     
     func submitInput(_ input: String) {
+        shoppingList.insert(input, at: 0)
         
+        let indexPath = IndexPath(row: 0, section: 0)
+        tableView.insertRows(at: [indexPath], with: .fade)
     }
     
 
