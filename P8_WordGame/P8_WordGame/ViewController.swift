@@ -98,9 +98,21 @@ class ViewController: UIViewController {
             // more constraints will be here
         ])
         
-        cluesLabel.backgroundColor = .systemMint
-        answersLabel.backgroundColor = .systemIndigo
-        buttonsView.backgroundColor = .systemPink
+        let width = 150     // some values to height and width to make code easy to read
+        let height = 80
+        
+        for row in 0..<4 {
+            for column in 0..<5 {
+                let letterBtn = UIButton(type: .system)
+                letterBtn.titleLabel?.font = UIFont.systemFont(ofSize: 36)
+                letterBtn.setTitle("WWW", for: .normal)
+                
+                let frame = CGRect(x: column * width, y: row * height, width: width, height: height)
+                letterBtn.frame = frame
+                buttonsView.addSubview(letterBtn)
+                letterButtons.append(letterBtn)
+            }
+        }
     }
     
     override func viewDidLoad() {
