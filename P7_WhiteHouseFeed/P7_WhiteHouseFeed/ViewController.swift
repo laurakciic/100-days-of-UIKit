@@ -16,6 +16,8 @@ class ViewController: UITableViewController {
         
         let urlString: String
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(showCredit))
+        
         if navigationController?.tabBarItem.tag == 0 {
             urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
         } else {
@@ -46,6 +48,13 @@ class ViewController: UITableViewController {
             petitions = jsonPetitions.results                                          // .results matches exact name in JSON
             tableView.reloadData()
         }
+    }
+    
+    @objc func showCredit() {
+        let creditAlert = UIAlertController(title: "Credits", message: "This data comes from We The People API of the Whitehouse", preferredStyle: .alert)
+        
+        creditAlert.addAction(UIAlertAction(title: "Got it", style: .default))
+        present(creditAlert, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
