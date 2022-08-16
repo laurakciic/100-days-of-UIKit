@@ -19,8 +19,8 @@ class ViewController: UITableViewController {
         if let url = URL(string: urlString) {               // convert to url
             if let data = try? Data(contentsOf: url) {      // fetch from API
                 parse(json: data)
-            }
-        }
+            } else {print("error 1")}
+        } else {print("error 2")}
     }
     
     func parse(json: Data) {
@@ -28,11 +28,12 @@ class ViewController: UITableViewController {
 
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {       // asks decoder to convert its data into a single petitions object (Petitons.self)
             petitions = jsonPetitions.results                                          // .results matches exact name in JSON
+            print(petitions[0].title)
             tableView.reloadData()
-        }
+        } else {print("error 3")}
     }
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return petitions.count
     }
     
