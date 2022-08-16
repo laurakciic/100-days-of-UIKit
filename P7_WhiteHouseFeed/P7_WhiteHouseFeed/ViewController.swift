@@ -9,7 +9,8 @@ import UIKit
 
 class ViewController: UITableViewController {
 
-    var petitions = [Petition]()
+    var petitions         = [Petition]()
+    var filteredPetitions = [Petition]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,6 +18,7 @@ class ViewController: UITableViewController {
         let urlString: String
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(showCredit))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(filterPetitions))
         
         if navigationController?.tabBarItem.tag == 0 {
             urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
@@ -46,8 +48,28 @@ class ViewController: UITableViewController {
 
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {       // asks decoder to convert its data into a single petitions object (Petitons.self)
             petitions = jsonPetitions.results                                          // .results matches exact name in JSON
+            filteredPetitions = jsonPetitions.results
             tableView.reloadData()
         }
+    }
+    
+    @objc func filterPetitions() {
+        let filterAlert = UIAlertController(title: "Search engine", message: nil, preferredStyle: .alert)
+       
+        filterAlert.addTextField()
+        filterAlert.addAction(UIAlertAction(title: "Search", style: .default) {
+            [weak self, weak filterAlert] _ in
+            guard let stringToSearch = filterAlert?.textFields?[0].text else { return }
+            self?.search(filterInput: stringToSearch)
+        })
+        
+        filterAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(filterAlert, animated: true)
+    }
+    
+    func search(filterInput: String) {
+        filteredPetitions = filteredPetitions.filter { $0.title.contains(filterInput) || $0.body.contains(filterInput) }
+        tableView.reloadData()
     }
     
     @objc func showCredit() {
@@ -58,15 +80,20 @@ class ViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return petitions.count
+        return filteredPetitions.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         
-        let petition = petitions[indexPath.row]
-        cell.textLabel?.text       = petition.title
-        cell.detailTextLabel?.text = petition.body
+//        let petition = petitions[indexPath.row]
+//        cell.textLabel?.text       = petition.title
+//        cell.detailTextLabel?.text = petition.body
+        
+        let filtered = filteredPetitions[indexPath.row]
+        cell.textLabel?.text = filtered.title
+        cell.detailTextLabel?.text = filtered.body
+        
         return cell
     }
     
