@@ -58,6 +58,10 @@ class ViewController: UIViewController {
         clear.setTitle("CLEAR", for: .normal)
         view.addSubview(clear)
         
+        let buttonsView = UIView()
+        buttonsView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(buttonsView)
+        
         NSLayoutConstraint.activate([
             scoreLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),               // layoutMarginsGuide - scoreLabel will have distance from the right edges
             scoreLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
@@ -81,13 +85,20 @@ class ViewController: UIViewController {
             
             clear.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 100),                 // move to the right of the center, away from the submit btn
             clear.centerYAnchor.constraint(equalTo: submit.centerYAnchor),                              // keep them aligned
-            clear.heightAnchor.constraint(equalToConstant: 44)
+            clear.heightAnchor.constraint(equalToConstant: 44),
+            
+            buttonsView.widthAnchor.constraint(equalToConstant: 750),
+            buttonsView.heightAnchor.constraint(equalToConstant: 350),
+            buttonsView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            buttonsView.topAnchor.constraint(equalTo: submit.bottomAnchor, constant: 20),
+            buttonsView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -20)
             
             // more constraints will be here
         ])
         
         cluesLabel.backgroundColor = .systemMint
         answerLabel.backgroundColor = .systemIndigo
+        buttonsView.backgroundColor = .systemPink
     }
     
     override func viewDidLoad() {
