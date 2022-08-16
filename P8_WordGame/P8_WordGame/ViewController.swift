@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     var cluesLabel: UILabel!
-    var answerLabel: UILabel!
+    var answersLabel: UILabel!
     var currentAnswer: UITextField!
     var scoreLabel: UILabel!
     var letterButtons = [UIButton]()
@@ -30,15 +30,17 @@ class ViewController: UIViewController {
         cluesLabel.font = UIFont.systemFont(ofSize: 24)
         cluesLabel.text = "CLUES"
         cluesLabel.numberOfLines = 0                                    // wraps all it's clues around as many lines as it takes
+        cluesLabel.setContentHuggingPriority(UILayoutPriority(1), for: .vertical)
         view.addSubview(cluesLabel)
         
-        answerLabel = UILabel()
-        answerLabel.translatesAutoresizingMaskIntoConstraints = false
-        answerLabel.font = UIFont.systemFont(ofSize: 24)
-        answerLabel.text = "ANSWERS"
-        answerLabel.textAlignment = .right
-        answerLabel.numberOfLines = 0
-        view.addSubview(answerLabel)
+        answersLabel = UILabel()
+        answersLabel.translatesAutoresizingMaskIntoConstraints = false
+        answersLabel.font = UIFont.systemFont(ofSize: 24)
+        answersLabel.text = "ANSWERS"
+        answersLabel.textAlignment = .right
+        answersLabel.numberOfLines = 0
+        answersLabel.setContentHuggingPriority(UILayoutPriority(1), for: .vertical)
+        view.addSubview(answersLabel)
         
         currentAnswer = UITextField()
         currentAnswer.translatesAutoresizingMaskIntoConstraints = false
@@ -70,10 +72,10 @@ class ViewController: UIViewController {
             cluesLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 100),                 // margin from the left
             cluesLabel.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.6, constant: -100),   // 60% of the width of the layout margins -100 for leading edge margin
             
-            answerLabel.topAnchor.constraint(equalTo: scoreLabel.bottomAnchor),
-            answerLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: -100),             // pull it in from the right edge
-            answerLabel.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.4, constant: -100),
-            answerLabel.heightAnchor.constraint(equalTo: cluesLabel.heightAnchor),                     // match the height of the clues label so they stay the same no matter what
+            answersLabel.topAnchor.constraint(equalTo: scoreLabel.bottomAnchor),
+            answersLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: -100),             // pull it in from the right edge
+            answersLabel.widthAnchor.constraint(equalTo: view.layoutMarginsGuide.widthAnchor, multiplier: 0.4, constant: -100),
+            answersLabel.heightAnchor.constraint(equalTo: cluesLabel.heightAnchor),                     // match the height of the clues label so they stay the same no matter what
             
             currentAnswer.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             currentAnswer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.5),          // half the width of the screen
@@ -97,7 +99,7 @@ class ViewController: UIViewController {
         ])
         
         cluesLabel.backgroundColor = .systemMint
-        answerLabel.backgroundColor = .systemIndigo
+        answersLabel.backgroundColor = .systemIndigo
         buttonsView.backgroundColor = .systemPink
     }
     
