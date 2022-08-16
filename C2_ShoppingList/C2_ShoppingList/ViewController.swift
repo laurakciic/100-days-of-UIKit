@@ -20,7 +20,7 @@ class ViewController: UITableViewController {
         start()
     }
     
-    @objc func start(action: UIAlertAction! = nil) {
+    @objc func start() {
         title = "Shopping List"
         shoppingList.removeAll(keepingCapacity: true)
         tableView.reloadData()
@@ -46,11 +46,8 @@ class ViewController: UITableViewController {
             guard let input = enterAlert?.textFields?[0].text else { return }
             self?.submitInput(input)
         }
+        
         enterAlert.addAction(submitAction)
-        
-        //enterAlert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: start))
-        
-        
         present(enterAlert, animated: true)
     }
     
