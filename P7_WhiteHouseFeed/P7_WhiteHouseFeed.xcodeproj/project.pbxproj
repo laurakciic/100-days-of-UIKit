@@ -13,6 +13,8 @@
 		D3994FE828AB94F40042B5C6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3994FE628AB94F40042B5C6 /* Main.storyboard */; };
 		D3994FEA28AB94F50042B5C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D3994FE928AB94F50042B5C6 /* Assets.xcassets */; };
 		D3994FED28AB94F50042B5C6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3994FEB28AB94F50042B5C6 /* LaunchScreen.storyboard */; };
+		D3EA1B9D28ABA072002F576C /* Petitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EA1B9C28ABA072002F576C /* Petitions.swift */; };
+		D3EA1B9F28ABA505002F576C /* Petition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3EA1B9E28ABA505002F576C /* Petition.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		D3994FE928AB94F50042B5C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D3994FEC28AB94F50042B5C6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D3994FEE28AB94F50042B5C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D3EA1B9C28ABA072002F576C /* Petitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Petitions.swift; sourceTree = "<group>"; };
+		D3EA1B9E28ABA505002F576C /* Petition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Petition.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +63,8 @@
 				D3994FE028AB94F40042B5C6 /* AppDelegate.swift */,
 				D3994FE228AB94F40042B5C6 /* SceneDelegate.swift */,
 				D3994FE428AB94F40042B5C6 /* ViewController.swift */,
+				D3EA1B9E28ABA505002F576C /* Petition.swift */,
+				D3EA1B9C28ABA072002F576C /* Petitions.swift */,
 				D3994FE628AB94F40042B5C6 /* Main.storyboard */,
 				D3994FE928AB94F50042B5C6 /* Assets.xcassets */,
 				D3994FEB28AB94F50042B5C6 /* LaunchScreen.storyboard */,
@@ -138,9 +144,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D3EA1B9F28ABA505002F576C /* Petition.swift in Sources */,
 				D3994FE528AB94F40042B5C6 /* ViewController.swift in Sources */,
 				D3994FE128AB94F40042B5C6 /* AppDelegate.swift in Sources */,
 				D3994FE328AB94F40042B5C6 /* SceneDelegate.swift in Sources */,
+				D3EA1B9D28ABA072002F576C /* Petitions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
