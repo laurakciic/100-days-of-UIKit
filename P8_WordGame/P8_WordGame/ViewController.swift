@@ -131,15 +131,55 @@ class ViewController: UIViewController {
     }
 
     @objc func letterTapped(_ sender: UIButton) {
+        guard let buttonTitle = sender.titleLabel?.text else { return }                                 // check just in case for titles of letterButtons
         
+        // append title to the existing text of current answer text field and put that new string back into the current answer
+        currentAnswer.text = currentAnswer.text?.appending(buttonTitle)                                 // add buttonTitle to the currentAnswer
+        activatedButtons.append(sender)                                                                 // add it to the activatedButtons array so we know it's been tapped
+        sender.isHidden = true                                                                          // hide it so the user can't tap it again
     }
     
     @objc func submitTapped(_ sender: UIButton) {
+        // first index tells us which solution matched their word, we can use that position to find the matching answer text (7 letters), all we need to is split the answer label text up by line breaks, replace the line at the solution position with the solution itself, then rejoin the answer label back together again
         
+        // read answer text from current answer text field
+        guard let answerText = currentAnswer.text else { return }
+        
+        // try find the answer text in solutions array using first index of, search through the solutions array for an item and if it finds it, tells us it's position
+        if let solutionPosition = solutions.firstIndex(of: answerText) {
+            activatedButtons.removeAll()
+        
+            // split the answer label text up by line breaks
+            var splitAnswers = answersLabel.text?.components(separatedBy: "\n")                         // will be an optional array
+            
+            // go into split answers, at the solution position where the word was found and replace 7 letters for example, with the solution itself
+            splitAnswers?[solutionPosition] = answerText
+            
+            // join the array back again still using line breaks, and put it back into the answers label
+            answersLabel.text = splitAnswers?.joined(separator: "\n")
+            
+            // clear current answer text field
+            currentAnswer.text = ""
+            score += 1                              // increment score, if score divides into 7 evenly, we know they finished the level so show the message well done get them to the next lvl
+            
+            if score % 7 == 0 {
+                let ac = UIAlertController(title: "Well done!", message: "Ready for next level?", preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "Yes!", style: .default, handler: levelUp))
+                present(ac, animated: true)
+            }
+            
+            
+        }
     }
     
     @objc func clearTapped(_ sender: UIButton) {
+        currentAnswer.text = ""                                                                         // blank what they've guessed so far
         
+        for button in activatedButtons {
+            button.isHidden = false                                                                     // reshow buttons that were previously tapped as part of the current answer
+        }
+        
+        activatedButtons.removeAll()                                                                    // empty array
     }
     
     func loadLevel() {
