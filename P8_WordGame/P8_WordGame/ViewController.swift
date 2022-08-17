@@ -23,6 +23,8 @@ class ViewController: UIViewController {
             scoreLabel.text = "Score: \(score)"
         }
     }
+    
+    var correctAnswer = 0
     var level = 1
     
     override func loadView() {          // main view inside here
@@ -157,12 +159,18 @@ class ViewController: UIViewController {
             
             currentAnswer.text = ""                 // clear current answer text field
             score += 1                              // increment score, if score divides into 7 evenly, we know they finished the level so show the message well done get them to the next lvl
+            correctAnswer += 1
             
-            if score % 7 == 0 {
+            if correctAnswer % 7 == 0 {
                 let ac = UIAlertController(title: "Well done!", message: "Ready for next level?", preferredStyle: .alert)
                 ac.addAction(UIAlertAction(title: "Yes!", style: .default, handler: levelUp))
                 present(ac, animated: true)
             }
+            
+        } else {
+            let ac = UIAlertController(title: "Wrong guess!", message: "Maybe try something else?", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Got it!", style: .default, handler: deductPoints))
+            present(ac, animated: true)
         }
     }
     
@@ -174,6 +182,12 @@ class ViewController: UIViewController {
         
         for button in letterButtons {
             button.isHidden = false                 // show all buttons
+        }
+    }
+    
+    func deductPoints(action: UIAlertAction) {
+        if score != 0 {
+            score -= 1
         }
     }
     
