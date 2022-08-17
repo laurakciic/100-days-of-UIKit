@@ -167,8 +167,17 @@ class ViewController: UIViewController {
                 ac.addAction(UIAlertAction(title: "Yes!", style: .default, handler: levelUp))
                 present(ac, animated: true)
             }
-            
-            
+        }
+    }
+    
+    func levelUp(action: UIAlertAction) {    // bc it's called from a UIAlertActions so it has it in parameter
+        level += 1
+        
+        solutions.removeAll(keepingCapacity: true)  // keeping capacity is true bc we have several solutions each time so we might as well keep capacity there for the next time
+        loadLevel()                                 // bc lvl has changed and we need to to load the next lvl
+        
+        for button in letterButtons {
+            button.isHidden = false                 // show all buttons
         }
     }
     
