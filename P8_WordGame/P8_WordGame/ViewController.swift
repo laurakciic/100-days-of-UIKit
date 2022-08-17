@@ -15,12 +15,18 @@ class ViewController: UIViewController {
     var scoreLabel: UILabel!
     var letterButtons = [UIButton]()
     
+    var activatedButtons = [UIButton]()
+    var solutions = [String]()
+    
+    var score = 0
+    var level = 1
+    
     override func loadView() {          // main view inside here
         view = UIView()                 // parent class of all UIKit's view types - labels, buttons, progress views...
         view.backgroundColor = .white
         
         scoreLabel = UILabel()
-        scoreLabel.translatesAutoresizingMaskIntoConstraints = false    // bc constraints will be made programatically, by hand
+        scoreLabel.translatesAutoresizingMaskIntoConstraints = false                                    // bc constraints will be made programatically, by hand
         scoreLabel.textAlignment = .right
         scoreLabel.text = "Score: 0"
         view.addSubview(scoreLabel)
@@ -29,7 +35,7 @@ class ViewController: UIViewController {
         cluesLabel.translatesAutoresizingMaskIntoConstraints = false
         cluesLabel.font = UIFont.systemFont(ofSize: 24)
         cluesLabel.text = "CLUES"
-        cluesLabel.numberOfLines = 0                                    // wraps all it's clues around as many lines as it takes
+        cluesLabel.numberOfLines = 0                                                                    // wraps all it's clues around as many lines as it takes
         cluesLabel.setContentHuggingPriority(UILayoutPriority(1), for: .vertical)
         view.addSubview(cluesLabel)
         
@@ -47,17 +53,19 @@ class ViewController: UIViewController {
         currentAnswer.placeholder = "Tap letters to guess"
         currentAnswer.textAlignment = .center
         currentAnswer.font = UIFont.systemFont(ofSize: 44)
-        currentAnswer.isUserInteractionEnabled = false                 // so they can't activate the textbox
+        currentAnswer.isUserInteractionEnabled = false                                                  // so they can't activate the textbox
         view.addSubview(currentAnswer)
         
         let submit = UIButton(type: .system)
         submit.translatesAutoresizingMaskIntoConstraints = false
         submit.setTitle("SUBMIT", for: .normal)
+        submit.addTarget(self, action: #selector(submitTapped), for: .touchUpInside)                    // when the user presses submit btn, call submit tapped on the current vc
         view.addSubview(submit)
         
         let clear = UIButton(type: .system)
         clear.translatesAutoresizingMaskIntoConstraints = false
         clear.setTitle("CLEAR", for: .normal)
+        clear.addTarget(self, action: #selector(clearTapped), for: .touchUpInside)                      // .touchUpInside - when btn is pressed down on
         view.addSubview(clear)
         
         let buttonsView = UIView()
@@ -106,6 +114,7 @@ class ViewController: UIViewController {
                 let letterBtn = UIButton(type: .system)
                 letterBtn.titleLabel?.font = UIFont.systemFont(ofSize: 36)
                 letterBtn.setTitle("WWW", for: .normal)
+                letterBtn.addTarget(self, action: #selector(letterTapped), for: .touchUpInside)
                 
                 let frame = CGRect(x: column * width, y: row * height, width: width, height: height)
                 letterBtn.frame = frame
@@ -120,6 +129,17 @@ class ViewController: UIViewController {
         
     }
 
+    @objc func letterTapped(_ sender: UIButton) {
+        
+    }
+    
+    @objc func submitTapped(_ sender: UIButton) {
+        
+    }
+    
+    @objc func clearTapped(_ sender: UIButton) {
+        
+    }
 
 }
 
