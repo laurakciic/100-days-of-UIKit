@@ -146,24 +146,16 @@ class ViewController: UIViewController {
     @objc func submitTapped(_ sender: UIButton) {
         // first index tells us which solution matched their word, we can use that position to find the matching answer text (7 letters), all we need to is split the answer label text up by line breaks, replace the line at the solution position with the solution itself, then rejoin the answer label back together again
         
-        // read answer text from current answer text field
-        guard let answerText = currentAnswer.text else { return }
+        guard let answerText = currentAnswer.text else { return }                   // read answer text from current answer text field
         
-        // try find the answer text in solutions array using first index of, search through the solutions array for an item and if it finds it, tells us it's position
-        if let solutionPosition = solutions.firstIndex(of: answerText) {
+        if let solutionPosition = solutions.firstIndex(of: answerText) {            // try find the answer text in solutions array using first index of, search through the solutions array for an item and if it finds it, tells us it's position
             activatedButtons.removeAll()
         
-            // split the answer label text up by line breaks
-            var splitAnswers = answersLabel.text?.components(separatedBy: "\n")                         // will be an optional array
+            var splitAnswers = answersLabel.text?.components(separatedBy: "\n")    // split the answer label text up by line breaks, will be an optional array
+            splitAnswers?[solutionPosition] = answerText                           // go into split answers, at the solution position where the word was found and replace 7 letters for example, with the solution itself
+            answersLabel.text = splitAnswers?.joined(separator: "\n")              // join the array back again still using line breaks, and put it back into the answers label
             
-            // go into split answers, at the solution position where the word was found and replace 7 letters for example, with the solution itself
-            splitAnswers?[solutionPosition] = answerText
-            
-            // join the array back again still using line breaks, and put it back into the answers label
-            answersLabel.text = splitAnswers?.joined(separator: "\n")
-            
-            // clear current answer text field
-            currentAnswer.text = ""
+            currentAnswer.text = ""                 // clear current answer text field
             score += 1                              // increment score, if score divides into 7 evenly, we know they finished the level so show the message well done get them to the next lvl
             
             if score % 7 == 0 {
