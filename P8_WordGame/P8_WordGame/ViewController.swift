@@ -127,6 +127,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadLevel()
     }
 
     @objc func letterTapped(_ sender: UIButton) {
@@ -139,6 +140,47 @@ class ViewController: UIViewController {
     
     @objc func clearTapped(_ sender: UIButton) {
         
+    }
+    
+    func loadLevel() {
+        var clueString     = ""             // will hold the full string shown in the cluesLabel, clue numbers, and clue hex themself
+        var solutionString = ""             // will hold text shown inside answersLabel
+        var letterBits     = [String]()     // will hold all the possible letter parts in level
+        
+        if let levelFileURL = Bundle.main.url(forResource: "level\(level)", withExtension: "txt") {
+            if let levelContents = try? String(contentsOf: levelFileURL) {                              //
+                var lines = levelContents.components(separatedBy: "\n")                                 // making individual lines, splits up all 7 clues into individual lines we can read through
+                lines.shuffle()                                                                         // mixing them up, each time player plays, it's different order
+                
+                // looping over the lines using enumerated method
+                for (index, line) in lines.enumerated() {                                               // tuple bc enumerated returns us 2 values each time
+                    let parts  = line.components(separatedBy: ": ")                                     // takes the line and splits it into 2 parts
+                    let answer = parts[0]                                                               // left
+                    let clue   = parts[1]                                                               // right
+                    
+                    clueString += "\(index + 1). \(clue)\n"                                             // npr. 1. ghost and residents
+                    
+                    let solutionWord = answer.replacingOccurrences(of: "|", with: "")
+                    solutionString  += "\(solutionWord.count) letters\n"                                // 7 letters, 9 letters..
+                    solutions.append(solutionWord)                                                      // to know what to look for
+                    
+                    let bits = answer.components(separatedBy: "|")
+                    letterBits += bits                                                                  // add those bits to the full collection of all our letter bits
+                    
+                }
+            }
+        }
+        
+        cluesLabel.text   = clueString.trimmingCharacters(in: .whitespacesAndNewlines)                  // trim final line breaks from the clue and solution string and put them into clues and answers label
+        answersLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        letterButtons.shuffle()
+        
+        if letterButtons.count == letterBits.count {                                                    // should always be the case, but just to be sure
+            for i in 0..<letterButtons.count {                                                          // counts through all letter buttons, 0-19
+                letterButtons[i].setTitle(letterBits[i], for: .normal)                                  // asign that butttons title to be the matching bit in letter bits array
+            }
+        }
     }
 
 }
