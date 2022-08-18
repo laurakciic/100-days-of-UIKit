@@ -12,6 +12,8 @@ An iPhone XS has six CPU cores inside, and each of those six things can work ind
 ## About
 
 In this technique project we're going to return to project 7 to solve a critical problem using GCD:
+
+
 _By downloading data from the internet in viewDidLoad() our app will lock up until all the data has been transferred_.
 
 We're going to solve this problem by using GCD, which will allow us to **fetch the data without locking up** the user interface.
