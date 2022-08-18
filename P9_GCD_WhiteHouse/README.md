@@ -26,7 +26,8 @@ _By downloading data from the internet in viewDidLoad() our app will lock up unt
 We're going to solve this problem by using GCD, which will allow us to **fetch the data without locking up** the user interface.
 > even though GCD might seem easy at first, it opens up a new raft of problems, so be careful!
          
-      
+<br/>
+
 ## 📒 Field Notes
 
 ### What is locking the UI in P7? 
