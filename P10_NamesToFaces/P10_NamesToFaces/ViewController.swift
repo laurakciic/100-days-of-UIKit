@@ -11,6 +11,8 @@ import UIKit
 // UINavigationControllerDelegate - pointless here, lets us determine user is going backward and forward inside picker
 class ViewController: UICollectionViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    var people = [Person]()             // store all people in app, everytime we add a new person, we create a new person obj with their details
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,6 +46,11 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         if let jpegData = image.jpegData(compressionQuality: 0.8) {         // convert image to JPEG data, 0-1
             try? jpegData.write(to: imagePath)                              // write to disk
         }
+        
+        let person = Person(name: "Uknown", image: imageName)               // creates a new person instance
+        people.append(person)                                               // to people array
+        collectionView.reloadData()
+        
         dismiss(animated: true)                                             // dismiss topmost vc, not self
         
     }
