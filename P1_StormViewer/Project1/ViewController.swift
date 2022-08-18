@@ -24,6 +24,10 @@ class ViewController: UITableViewController {
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(recommendApp))
         
+        performSelector(inBackground: #selector(loadImages), with: nil)
+    }
+    
+    @objc func loadImages() {
         let fm    = FileManager.default                          // will be used to look for files
         let path  = Bundle.main.resourcePath!                    // tell me where I can find images I added to my app
         let items = try! fm.contentsOfDirectory(atPath: path)    // will be an array of strings containing filenames, items is set to the contents of the dir at path
@@ -31,10 +35,11 @@ class ViewController: UITableViewController {
         for item in items {
             if item.hasPrefix("nssl") {
                 images.append(item)
-                
             }
         }
         images.sort()
+        
+        tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

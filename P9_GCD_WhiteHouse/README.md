@@ -156,3 +156,20 @@ GCD automatically balances work so that higher priority queues are given more ti
 
 3. [performSelector to simplify GCD code](https://github.com/laurakciic/starting-iOS/commit/a6844e99c8fe7d995d7a8f02bad30050ba2c4eda)
 
+<br/>
+
+## 💡 Challenges
+
+1. [Modify project 1 so that loading the list of NSSL images from our bundle happens in the background]()
+> Make sure you call reloadData() on the table view once loading has finished!
+
+2. [Modify project 8 so that loading and parsing a level takes place in the background.]() 
+> Once you’re done, make sure you update the UI on the main thread!
+
+3. [Modify project 7 so that your filtering code takes place in the background.]()
+
+<br/>
+
+## 📝 Facts from quiz
+
+- using a ```return``` inside a closure only exits the closure, not the function the closure was inside
