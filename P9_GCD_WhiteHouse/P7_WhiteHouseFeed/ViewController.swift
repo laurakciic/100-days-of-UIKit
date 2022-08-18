@@ -26,11 +26,14 @@ class ViewController: UITableViewController {
             urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
         }
         
-        if let url = URL(string: urlString) {               // convert to url
-            if let data = try? Data(contentsOf: url) {      // fetch from API
-                
-                parse(json: data)
-                return
+        DispatchQueue.global(qos: .userInitiated).async {
+            [weak self] in
+            if let url = URL(string: urlString) {               // convert to url
+                if let data = try? Data(contentsOf: url) {      // fetch from API
+                    
+                    self?.parse(json: data)                     // parse means self.parse so needs to be weak captured bc this is a closure
+                    return
+                }
             }
         }
         

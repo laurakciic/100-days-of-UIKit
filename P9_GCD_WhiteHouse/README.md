@@ -72,5 +72,67 @@ Threads are code execution processes which execute multiple sets of instructions
 
 <br/>
 
+### Async()
+
+- how you call ```async()``` informs the system where you want the code to run
+- GCD works with a system of queues, which are much like a real-world queue, FIFO
+> GCD calls don't create threads to run in, they just get assigned to one of the existing threads for GCD to manage
+
+<br/>
+
+
+GCD creates for you a number of queues, and places tasks in those queues depending on how important you say they are. All are FIFO, meaning that each block of code will be taken off the queue in the order they were put in, but more than one code block can be executed at the same time so the finish order isn't guaranteed.
+
+<br/>
+
+
+- “how important” some code is depends on something called “quality of service”, or QoS, which decides what level of service this code should be given
+    - obviously at the top of this is the main queue, which runs on your main thread, and should be used to schedule any work that must update the user interface immediately even when that means blocking your program from doing anything else
+
+<br/>
+
+
+4 background queves
+
+<br/>
+
+_USER INTERACTIVE_
+- highest priority background thread
+- should be used when you want a background thread to do work that is important to keep your user interface working
+- will ask the system to dedicate nearly all available CPU time to you to get the job done as quickly as possible
+
+_USER INITIATED_
+- to execute tasks requested by the user that they are now waiting for in order to continue using your app
+- not as important as user interactive work
+    - if the user taps on buttons to do other stuff, that should be executed first – but it is important because you're keeping the user waiting
+
+_UTILITY QUEVE_
+- for long-running tasks that the user is aware of, but not necessarily desperate for now
+- if the user has requested something and can happily leave it running while they do something else with your app
+
+_BACKGROUND QUEVE_
+- for long-running tasks that the user isn't actively aware of, or at least doesn't care about its progress or when it completes
+
+<br/>
+
+There’s also one more option, which is the _DEFAULT QUEVE_. This is prioritized between user-initiated and utility, and is a good general-purpose choice while you’re learning.
+
+<br/>
+
+Those QoS queues affect the way the system prioritizes your work: User Interactive and User Initiated tasks will be executed as quickly as possible regardless of their effect on battery life, Utility tasks will be executed with a view to keeping power efficiency as high as possible without sacrificing too much performance, whereas Background tasks will be executed with power efficiency as its priority.
+
+<br/>
+
+GCD automatically balances work so that higher priority queues are given more time than lower priority ones, even if that means temporarily delaying a background task because a user interactive task just came in.
+
+<br/>
+
+## 📒 Instructions
+
+### async() method
+- takes one parameter, which is a closure to execute asynchronously
+> Because async() uses closures, you might think to start with [weak self] in to make sure there aren’t any accident strong reference cycles, but it isn’t necessary here because GCD runs the code once then throws it away – it won’t retain things used inside
+
+1. for making all our [loading code run in the background queue with default quality of service]()
 
 
