@@ -43,17 +43,17 @@ We used Data's contentsOf to download data from the internet on the main thread,
 ### Threads
 
 Threads are code execution processes which execute multiple sets of instructions at the same time, which allows to take advantage of having multiple CPU cores.
-- > Each CPU can be doing something independently of the others, which hugely boosts your performance.
+> Each CPU can be doing something independently of the others, which hugely boosts your performance.
 
-1. Threads execute the code you give them, they don't just randomly execute a few lines from viewDidLoad() each. 
-- > This means by default your own code executes on only one CPU, because you haven't created threads for other CPUs to work on.
+- Threads execute the code you give them, they don't just randomly execute a few lines from viewDidLoad() each. 
+    - This means by default your own code executes on only one CPU, because you haven't created threads for other CPUs to work on
 
-2. All user interface work must occur on the main thread, which is the initial thread your program is created on. 
-- > If you try to execute code on a different thread, it might work, it might fail to work, it might cause unexpected results, or it might just crash.
+- All user interface work must occur on the main thread, which is the initial thread your program is created on. 
+    - If you try to execute code on a different thread, it might work, it might fail to work, it might cause unexpected results, or it might just crash.
 
-3. You don't get to control when threads execute, or in what order. You create them and give them to the system to run, and the system handles executing them as best it can.
+- You don't get to control when threads execute, or in what order. You create them and give them to the system to run, and the system handles executing them as best it can.
 
-4. Because you don't control the execution order, you need to be extra vigilant in your code to ensure only one thread modifies your data at one time.
+- Because you don't control the execution order, you need to be extra vigilant in your code to ensure only one thread modifies your data at one time.
 
 
 
