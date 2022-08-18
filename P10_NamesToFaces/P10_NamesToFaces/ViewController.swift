@@ -39,16 +39,16 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         guard let image = info[.editedImage] as? UIImage else { return }    // attempt to find edited image in dictionary that's passed in and type cast it to UIImage
         
         let imageName = UUID().uuidString   // new image name for disk using UUID, type all by itself, making a new one, and reading its strings straight out of there
-        let imagePath = getDocumentsDirectory().appenndPathComponent(imageName)     // read docs dir for app wherever that be and their hidden secret URL, then append to that filename we just made
+        let imagePath = getDocumentsDirectory().appendingPathComponent(imageName)     // read docs dir for app wherever that be and their hidden secret URL, then append to that filename we just made
     
         if let jpegData = image.jpegData(compressionQuality: 0.8) {         // convert image to JPEG data, 0-1
             try? jpegData.write(to: imagePath)                              // write to disk
         }
-        dismiss(animated: true)                                             // dismiss topmost vc (image picker, not self)
+        dismiss(animated: true)                                             // dismiss topmost vc, not self
         
     }
     
-    func getDocumentsDirectiory() -> URL {
+    func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)  // param userDomainMask clarifies we want that docs dir for our current user, returns an array containing nearly always one thing - users docs dir
         return paths[0]     // so we return first item in there
     }
