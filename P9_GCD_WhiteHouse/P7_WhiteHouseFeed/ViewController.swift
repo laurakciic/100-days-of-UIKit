@@ -67,16 +67,20 @@ class ViewController: UITableViewController {
         filterAlert.addAction(UIAlertAction(title: "Search", style: .default) {
             [weak self, weak filterAlert] _ in
             guard let stringToSearch = filterAlert?.textFields?[0].text else { return }
-            self?.search(filterInput: stringToSearch)
+            
+            DispatchQueue.global(qos: .background).async { [weak self] in
+                self?.search(filterInput: stringToSearch)
+            }
         })
         
         filterAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(filterAlert, animated: true)
     }
     
-    func search(filterInput: String) {
+    @objc func search(filterInput: String) {
         filteredPetitions = filteredPetitions.filter { $0.title.contains(filterInput) || $0.body.contains(filterInput) }
-        tableView.reloadData()
+        
+        tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
     }
     
     @objc func showCredit() {
