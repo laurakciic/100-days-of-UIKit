@@ -135,7 +135,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadLevel()
+        performSelector(inBackground: #selector(loadLevel), with: nil)
     }
 
     @objc func letterTapped(_ sender: UIButton) {
@@ -203,7 +203,7 @@ class ViewController: UIViewController {
         activatedButtons.removeAll()                                                                    // empty array
     }
     
-    func loadLevel() {
+    @objc func loadLevel() {
         var clueString     = ""             // will hold the full string shown in the cluesLabel, clue numbers, and clue hex themself
         var solutionString = ""             // will hold text shown inside answersLabel
         var letterBits     = [String]()     // will hold all the possible letter parts in level
@@ -232,14 +232,16 @@ class ViewController: UIViewController {
             }
         }
         
-        cluesLabel.text   = clueString.trimmingCharacters(in: .whitespacesAndNewlines)                  // trim final line breaks from the clue and solution string and put them into clues and answers label
-        answersLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        letterButtons.shuffle()
-        
-        if letterButtons.count == letterBits.count {                                                    // should always be the case, but just to be sure
-            for i in 0..<letterButtons.count {                                                          // counts through all letter buttons, 0-19
-                letterButtons[i].setTitle(letterBits[i], for: .normal)                                  // asign that butttons title to be the matching bit in letter bits array
+        DispatchQueue.main.async { [weak self] in
+            self?.cluesLabel.text   = clueString.trimmingCharacters(in: .whitespacesAndNewlines)                  // trim final line breaks from the clue and solution string and put them into clues and answers label
+            self?.answersLabel.text = solutionString.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            self?.letterButtons.shuffle()
+            
+            if self?.letterButtons.count == letterBits.count {                                                    // should always be the case, but just to be sure
+                for i in 0..<self!.letterButtons.count {                                                          // counts through all letter buttons, 0-19
+                    self?.letterButtons[i].setTitle(letterBits[i], for: .normal)                                  // asign that butttons title to be the matching bit in letter bits array
+                }
             }
         }
     }
