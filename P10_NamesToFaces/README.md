@@ -1,8 +1,8 @@
-# [Project 9 - Grand Central Dispatch](https://www.hackingwithswift.com/100/39)
+# [Project 10 - Grand Central Dispatch](https://www.hackingwithswift.com/100/39)
 
 ## Topics
 
-UICollectionViewController, UIImagePickerController, Data, UUID, CALayer, UIAlertController
+UICollectionViewController, UIImagePickerController, Data, UUID, UIImagePickerController, NSObject, CALayer
 
 <br/>
 
