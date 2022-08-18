@@ -3,14 +3,12 @@
 ## Topics
 
 Grand Central Dispatch, PerformSelector, quality of service queues, async()
-
-    
+<br/><br/>    
 ## Intro
 
 An iPhone XS has six CPU cores inside, and each of those six things can work independently of the others. If you use just one of them – as we have been doing all this time – then your app will never come close to using the full power of the device.
 > Apple has a powerful framework called **Grand Central Dispatch** that solves this problem remarkably easy
-
-      
+<br/><br/>
 ## About
 
 In this technique project we're going to return to project 7 to solve a critical problem using GCD:
@@ -38,7 +36,8 @@ We're going to solve this problem by using GCD, which will allow us to **fetch t
 
 We used Data's contentsOf to download data from the internet on the main thread, which is what's known as a blocking call. That is, it blocks execution of any further code in the method until it has connected to the server and fully downloaded all the data.
 > causes the entire program to freeze – the user can touch the screen all they want, but nothing will happen. When the data finally downloads (or just fails), the program will unfreeze. This is a terrible experience, particularly when you consider that iPhones are frequently on poor-quality data connections.
-    
+<br/><br/>
+<br/><br/>
     
 ### Threads
 
