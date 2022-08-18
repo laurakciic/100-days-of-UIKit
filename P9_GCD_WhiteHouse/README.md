@@ -91,7 +91,6 @@ GCD creates for you a number of queues, and places tasks in those queues dependi
 
 <br/>
 
-
 ### 4 Background Queves
 
 <br/>
@@ -136,12 +135,18 @@ GCD automatically balances work so that higher priority queues are given more ti
 
 <br/>
 
-## 📒 Instructions
+## 📒 Project
 
 ### async() method
 - takes one parameter, which is a closure to execute asynchronously
 > Because async() uses closures, you might think to start with [weak self] in to make sure there aren’t any accident strong reference cycles, but it isn’t necessary here because GCD runs the code once then throws it away – it won’t retain things used inside
 
 1. for making all our [loading code run in the background queue with default quality of service](https://github.com/laurakciic/starting-iOS/commit/e0919b5fb20287cff998d88188d7f7bd28c2e7aa)
+
+#### ❗ it's never OK to do user interface work on the background thread ❗
+
+2. [push UI code back to the main thread]()
+> If you're on a background thread and want to execute code on the main thread, you need to call ```async()``` again. This time, however, you do it on ```DispatchQueue.main```, which is the main thread, rather than one of the global quality of service queues.
+> 
 
 
