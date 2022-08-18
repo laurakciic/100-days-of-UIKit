@@ -145,8 +145,8 @@ GCD automatically balances work so that higher priority queues are given more ti
 
 #### ❗ it's never OK to do user interface work on the background thread ❗
 
-2. [push UI code back to the main thread]()
+2. [push UI code back to the main thread](https://github.com/laurakciic/starting-iOS/commit/875f0f1e385936dcb494dd498d1b078f97e86437)
 > If you're on a background thread and want to execute code on the main thread, you need to call ```async()``` again. This time, however, you do it on ```DispatchQueue.main```, which is the main thread, rather than one of the global quality of service queues.
-> 
+
 
 

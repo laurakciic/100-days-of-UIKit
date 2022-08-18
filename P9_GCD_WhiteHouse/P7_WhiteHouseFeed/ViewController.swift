@@ -15,6 +15,10 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        performSelector(inBackground: #selector(fetchJSON), with: nil)      // run fetchJSON() on the current object of vc in background
+    }
+
+    @objc func fetchJSON() {
         let urlString: String
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(showCredit))
@@ -26,26 +30,21 @@ class ViewController: UITableViewController {
             urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
         }
         
-        DispatchQueue.global(qos: .userInitiated).async {
-            [weak self] in
-            if let url = URL(string: urlString) {               // convert to url
-                if let data = try? Data(contentsOf: url) {      // fetch from API
+        if let url = URL(string: urlString) {               // convert to url
+            if let data = try? Data(contentsOf: url) {      // fetch from API
                     
-                    self?.parse(json: data)                     // parse means self.parse so needs to be weak captured bc this is a closure
-                    return
-                }
+                parse(json: data)
+                return
             }
-            self?.showError()
         }
         
+        performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)    // runs showError() on main thread (UI!)
     }
     
-    func showError() {
-        DispatchQueue.main.async { [weak self] in
+    @objc func showError() {
             let ac = UIAlertController(title: "Loading error", message: "There was a connection problem loading the feed, please check your connection and try again.", preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
-            self?.present(ac, animated: true)
-        }
+            present(ac, animated: true)
     }
     
     func parse(json: Data) {
@@ -55,9 +54,9 @@ class ViewController: UITableViewController {
             petitions = jsonPetitions.results                                          // .results matches exact name in JSON
             filteredPetitions = jsonPetitions.results
             
-            DispatchQueue.main.async {  [weak self] in
-                self?.tableView.reloadData()
-            }
+            tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)     // call reloadData on tableView, with no object attached to it (nil)
+        } else {
+            performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
         }
     }
     
