@@ -92,7 +92,7 @@ GCD creates for you a number of queues, and places tasks in those queues dependi
 <br/>
 
 
-4 background queves
+### 4 Background Queves
 
 <br/>
 
@@ -101,14 +101,23 @@ _USER INTERACTIVE_
 - should be used when you want a background thread to do work that is important to keep your user interface working
 - will ask the system to dedicate nearly all available CPU time to you to get the job done as quickly as possible
 
+<br/>
+
+
 _USER INITIATED_
 - to execute tasks requested by the user that they are now waiting for in order to continue using your app
 - not as important as user interactive work
     - if the user taps on buttons to do other stuff, that should be executed first – but it is important because you're keeping the user waiting
 
+<br/>
+
+
 _UTILITY QUEVE_
 - for long-running tasks that the user is aware of, but not necessarily desperate for now
 - if the user has requested something and can happily leave it running while they do something else with your app
+
+<br/>
+
 
 _BACKGROUND QUEVE_
 - for long-running tasks that the user isn't actively aware of, or at least doesn't care about its progress or when it completes
@@ -133,6 +142,6 @@ GCD automatically balances work so that higher priority queues are given more ti
 - takes one parameter, which is a closure to execute asynchronously
 > Because async() uses closures, you might think to start with [weak self] in to make sure there aren’t any accident strong reference cycles, but it isn’t necessary here because GCD runs the code once then throws it away – it won’t retain things used inside
 
-1. for making all our [loading code run in the background queue with default quality of service]()
+1. for making all our [loading code run in the background queue with default quality of service](https://github.com/laurakciic/starting-iOS/commit/e0919b5fb20287cff998d88188d7f7bd28c2e7aa)
 
 
