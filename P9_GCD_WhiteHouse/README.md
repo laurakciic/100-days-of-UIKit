@@ -163,10 +163,10 @@ GCD automatically balances work so that higher priority queues are given more ti
 1. [Modify project 1 so that loading the list of NSSL images from our bundle happens in the background](https://github.com/laurakciic/starting-iOS/commit/0d036a64e8e15cf441579bb2127448bf039f4c11)
 > Make sure you call reloadData() on the table view once loading has finished!
 
-2. [Modify project 8 so that loading and parsing a level takes place in the background.]() 
+2. [Modify project 8 so that loading and parsing a level takes place in the background.](https://github.com/laurakciic/starting-iOS/commit/18c9e7c46bcda396874c7d0019cceb3d84232756) 
 > Once you’re done, make sure you update the UI on the main thread!
 
-3. [Modify project 7 so that your filtering code takes place in the background.]()
+3. [Modify project 7 so that your filtering code takes place in the background.](https://github.com/laurakciic/starting-iOS/commit/d4a5cb4a91356cac5ad8566b9b8e1cf25d86ff58)
 
 <br/>
 
