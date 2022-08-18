@@ -74,20 +74,34 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let ac = UIAlertController(title: "Do you want to rename or delete this item?", message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Rename", style: .default, handler: {action in self.renamePerson(alert: ac, indexPath: indexPath)}))
+        ac.addAction(UIAlertAction(title: "Delete", style: .default, handler: {action in self.deletePerson(collectionView: collectionView, indexPath: indexPath)}))
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(ac, animated: true)
+        
+    }
+    
+    func renamePerson(alert: UIAlertController, indexPath: IndexPath) {
         let person = people[indexPath.item]
         
         let ac = UIAlertController(title: "Rename person", message: nil, preferredStyle: .alert)
         ac.addTextField()
-        
+
         ac.addAction(UIAlertAction(title: "OK", style: .default) {
             [weak self, weak ac] _ in                                       // will be passed in so it needs _/action
             guard let newName = ac?.textFields?[0].text else { return }     // read out text fields text and use it for our person's name
             person.name = newName
             self?.collectionView.reloadData()
         })
-        
+
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(ac, animated: true)
+    }
+    
+    func deletePerson(collectionView: UICollectionView, indexPath: IndexPath) {
+        people.remove(at: indexPath.item)
+        collectionView.deleteItems(at: [indexPath])
     }
 }
 
