@@ -10,6 +10,7 @@ import SpriteKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var scoreLabel: SKLabelNode!
+    var balls = ["ballBlue", "ballCyan", "ballGreen", "ballYellow", "ballGrey", "ballPurple", "ballRed"]
     
     var score = 0 {
         didSet {
@@ -84,7 +85,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 box.physicsBody?.isDynamic = false                                      // don't allow to move (as balls bounce of it, they won't move around on the screen)
                 addChild(box)                                                           // add to game scene
             } else {
-                let ball = SKSpriteNode(imageNamed: "ballBlue")                             // create ball
+                let ball = SKSpriteNode(imageNamed: balls.randomElement() ?? "ballRed")     // create ball
                 ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)     // to have balls behave like balls not rectangles
                 ball.physicsBody?.restitution = 0.4                                         // bounciness, 0-not bouncy to 1-super bouncy
                 ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0  // collisionBitmask tells us which nodes should I bump into (by default all), contactTestBitMask - which collisions you want to know about - by default, none ---> bounce off everything that has physics bodies also tell us about every bounce
