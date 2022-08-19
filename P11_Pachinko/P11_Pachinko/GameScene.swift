@@ -9,7 +9,25 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    var scoreLabel: SKLabelNode!
     
+    var score = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
+    
+    var editLabel: SKLabelNode!
+    
+    var editingMode: Bool = false {
+        didSet {
+            if editingMode {
+                editLabel.text = "Done"
+            } else {
+                editLabel.text = "Edit"
+            }
+        }
+    }
     
     override func didMove(to view: SKView) {
         
@@ -18,6 +36,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         background.blendMode = .replace
         background.zPosition = -1
         addChild(background)
+        
+        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
+        scoreLabel.text = "Score: 0"
+        scoreLabel.horizontalAlignmentMode = .right
+        scoreLabel.position = CGPoint(x: 980, y: 700)
+        addChild(scoreLabel)
+        
+        editLabel = SKLabelNode(fontNamed: "Chalkduster")
+        editLabel.text = "Edit"
+        editLabel.position = CGPoint(x: 80, y: 700)
+        addChild(editLabel)
         
         physicsBody = SKPhysicsBody(edgeLoopFrom: frame)
         physicsWorld.contactDelegate = self
@@ -38,14 +67,32 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }                             // attempt to read the first touch that came in
         let location = touch.location(in: self)                                     // find where the touch was in the whole game scene
+        let objects = nodes(at: location)
         
-        let ball = SKSpriteNode(imageNamed: "ballBlue")                             // create ball
-        ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)     // to have balls behave like balls not rectangles
-        ball.physicsBody?.restitution = 0.4                                         // bounciness, 0-not bouncy to 1-super bouncy
-        ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0  // collisionBitmask tells us which nodes should I bump into (by default all), contactTestBitMask - which collisions you want to know about - by default, none ---> bounce off everything that has physics bodies also tell us about every bounce
-        ball.position = location
-        ball.name = "ball"                                                          // spritenodes name
-        addChild(ball)
+        // tells whether we are in editing mode or not
+        if objects.contains(editLabel) {
+            editingMode.toggle()                                                        // toggle flips boolean from true to false or false to true, same as editingMode = !editingMode
+        } else {
+            if editingMode {
+                // create a box
+                let size = CGSize(width: Int.random(in: 16...128), height: 16)          // create random size
+                let box = SKSpriteNode(color: UIColor(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1), size: size) // random boxes
+                box.zRotation = CGFloat.random(in: 0...3)                               // rotate it random number of radians between 0 and 3 (bit less than 180 deg)
+                box.position = location                                                 // place it where was tapped
+                
+                box.physicsBody = SKPhysicsBody(rectangleOf: box.size)                  // give it a rectangle physics body
+                box.physicsBody?.isDynamic = false                                      // don't allow to move (as balls bounce of it, they won't move around on the screen)
+                addChild(box)                                                           // add to game scene
+            } else {
+                let ball = SKSpriteNode(imageNamed: "ballBlue")                             // create ball
+                ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)     // to have balls behave like balls not rectangles
+                ball.physicsBody?.restitution = 0.4                                         // bounciness, 0-not bouncy to 1-super bouncy
+                ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0  // collisionBitmask tells us which nodes should I bump into (by default all), contactTestBitMask - which collisions you want to know about - by default, none ---> bounce off everything that has physics bodies also tell us about every bounce
+                ball.position = location
+                ball.name = "ball"                                                          // spritenodes name
+                addChild(ball)
+            }
+        }
     }
     
     func makeBouncer(at position: CGPoint) {
@@ -87,8 +134,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func collision(between ball: SKNode, object: SKNode) {
         if object.name == "good" {
             destroy(ball: ball)
+            score += 1
         } else if object.name == "bad" {
             destroy(ball: ball)
+            score -= 1
         }
     }
     
