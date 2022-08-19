@@ -44,10 +44,17 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     }
 
     @objc func addNewPerson() {
-        let picker = UIImagePickerController()
-        picker.allowsEditing = true                 // lets users edit pictures they select
-        picker.delegate = self                      // sets us as the delegate for the picker, we can want to responnd to msgs from the picker
-        present(picker, animated: true)
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
+            let picker = UIImagePickerController()
+            picker.allowsEditing = true                 // lets users edit pictures they select
+            picker.delegate = self                      // sets us as the delegate for the picker, we can want to responnd to msgs from the picker
+            present(picker, animated: true)
+        } else
+        {
+            let alert  = UIAlertController(title: "Warning", message: "Camera available only on physical device", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
