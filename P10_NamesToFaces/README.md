@@ -6,12 +6,6 @@ UICollectionViewController, UIImagePickerController, Data, UUID, UIImagePickerCo
 
 <br/>
 
-## Intro
-
-
-
-<br/>
-
 ## About
 
 An app to help store names of people you've met.
@@ -33,6 +27,9 @@ An app to help store names of people you've met.
 
 ## 💡 Challenges
 
+1.[]()
+2.[]()
+3.[]()
 
 <br/>
 
