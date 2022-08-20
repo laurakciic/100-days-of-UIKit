@@ -90,6 +90,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 ball.physicsBody?.restitution = 0.4                                         // bounciness, 0-not bouncy to 1-super bouncy
                 ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0  // collisionBitmask tells us which nodes should I bump into (by default all), contactTestBitMask - which collisions you want to know about - by default, none ---> bounce off everything that has physics bodies also tell us about every bounce
                 ball.position = location
+                if (location.y < 600) {
+                    ball.position.y = 600
+                }
                 ball.name = "ball"                                                          // spritenodes name
                 addChild(ball)
             }
