@@ -10,6 +10,24 @@ import UIKit
 class ViewController: UIViewController {
 
     var wordsToGuess = [String]()
+    var guessesLabel: UILabel!
+    
+    override func loadView() {
+        view = UIView()
+        view.backgroundColor = .white
+        
+        guessesLabel = UILabel()
+        guessesLabel.translatesAutoresizingMaskIntoConstraints = false
+        guessesLabel.textAlignment = .center
+        guessesLabel.text = "Guesses left: dunno"
+        view.addSubview(guessesLabel)
+        
+        NSLayoutConstraint.activate([
+            guessesLabel.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+            guessesLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+        ])
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
