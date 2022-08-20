@@ -11,6 +11,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var scoreLabel: SKLabelNode!
     var ballCountLabel: SKLabelNode!
+    var boxes = [SKSpriteNode]()
     
     var ballCount = 5 {
         didSet {
@@ -98,6 +99,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 box.physicsBody = SKPhysicsBody(rectangleOf: box.size)                  // give it a rectangle physics body
                 box.physicsBody?.isDynamic = false                                      // don't allow to move (as balls bounce of it, they won't move around on the screen)
                 addChild(box)                                                           // add to game scene
+                
+                box.name = "box"
+                boxes.append(box)
+                
             } else {
                 
                 if ballCount > 0 {
@@ -161,6 +166,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else if object.name == "bad" {
             destroy(ball: ball)
             score -= 1
+        } else if object.name == "box" {
+            let box = nodes(at: object.position)
+            box[0].removeFromParent()
         }
     }
     
