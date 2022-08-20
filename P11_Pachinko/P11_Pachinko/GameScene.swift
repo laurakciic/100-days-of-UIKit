@@ -10,6 +10,14 @@ import SpriteKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var scoreLabel: SKLabelNode!
+    var ballCountLabel: SKLabelNode!
+    
+    var ballCount = 5 {
+        didSet {
+            ballCountLabel.text = "Balls left: \(ballCount)"
+        }
+    }
+    
     var balls = ["ballBlue", "ballCyan", "ballGreen", "ballYellow", "ballGrey", "ballPurple", "ballRed"]
     
     var score = 0 {
@@ -43,6 +51,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.horizontalAlignmentMode = .right
         scoreLabel.position = CGPoint(x: 980, y: 700)
         addChild(scoreLabel)
+    
+        ballCountLabel = SKLabelNode(fontNamed: "Chalkduster")
+        ballCountLabel.text = "Balls left: 5"
+        ballCountLabel.horizontalAlignmentMode = .right
+        ballCountLabel.position = CGPoint(x: 980, y: 650)
+        addChild(ballCountLabel)
         
         editLabel = SKLabelNode(fontNamed: "Chalkduster")
         editLabel.text = "Edit"
@@ -72,7 +86,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // tells whether we are in editing mode or not
         if objects.contains(editLabel) {
-            editingMode.toggle()                                                        // toggle flips boolean from true to false or false to true, same as editingMode = !editingMode
+            editingMode.toggle()                                                    // toggle flips boolean from true to false or false to true, same as editingMode = !editingMode
         } else {
             if editingMode {
                 // create a box
@@ -85,16 +99,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 box.physicsBody?.isDynamic = false                                      // don't allow to move (as balls bounce of it, they won't move around on the screen)
                 addChild(box)                                                           // add to game scene
             } else {
-                let ball = SKSpriteNode(imageNamed: balls.randomElement() ?? "ballRed")     // create ball
-                ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)     // to have balls behave like balls not rectangles
-                ball.physicsBody?.restitution = 0.4                                         // bounciness, 0-not bouncy to 1-super bouncy
-                ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0  // collisionBitmask tells us which nodes should I bump into (by default all), contactTestBitMask - which collisions you want to know about - by default, none ---> bounce off everything that has physics bodies also tell us about every bounce
-                ball.position = location
-                if (location.y < 600) {
-                    ball.position.y = 600
+                
+                if ballCount > 0 {
+                    let ball = SKSpriteNode(imageNamed: balls.randomElement() ?? "ballRed")     // create ball
+                    ball.physicsBody = SKPhysicsBody(circleOfRadius: ball.size.width / 2.0)     // to have balls behave like balls not rectangles
+                    ball.physicsBody?.restitution = 0.4                                         // bounciness, 0-not bouncy to 1-super bouncy
+                    ball.physicsBody?.contactTestBitMask = ball.physicsBody?.collisionBitMask ?? 0  // collisionBitmask tells us which nodes should I bump into (by default all), contactTestBitMask - which collisions you want to know about - by default, none ---> bounce off everything that has physics bodies also tell us about every bounce
+                    ball.position = location
+                    if (location.y < 600) {
+                        ball.position.y = 600
+                    }
+                    ball.name = "ball"                                                          // spritenodes name
+                    addChild(ball)
+                    
+                    ballCount -= 1
                 }
-                ball.name = "ball"                                                          // spritenodes name
-                addChild(ball)
             }
         }
     }
