@@ -17,6 +17,15 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
+        
+        let defaults = UserDefaults.standard
+        
+        if let savedPeople = defaults.object(forKey: "people") as? Data {                        // object(forKey:) method to pull out people key from savedData and typecaste it as Data
+            if let decodedPeople = try?
+                NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedPeople) as? [Person] {    // decode savedPeople and typecast decoded value as array of people [Person]
+                people = decodedPeople                                                           // put that into people array
+            }
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -69,6 +78,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         
         let person = Person(name: "Uknown", image: imageName)               // creates a new person instance
         people.append(person)                                               // to people array
+        save()
         collectionView.reloadData()
         
         dismiss(animated: true)                                             // dismiss topmost vc, not self
@@ -99,6 +109,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             [weak self, weak ac] _ in                                       // will be passed in so it needs _/action
             guard let newName = ac?.textFields?[0].text else { return }     // read out text fields text and use it for our person's name
             person.name = newName
+            self?.save()
             self?.collectionView.reloadData()
         })
 
@@ -109,6 +120,13 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     func deletePerson(collectionView: UICollectionView, indexPath: IndexPath) {
         people.remove(at: indexPath.item)
         collectionView.deleteItems(at: [indexPath])
+    }
+    
+    func save() {
+        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: people, requiringSecureCoding: false) {    // wraps people array into savedData obj - all data inside Person
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "people")                                                                   // writes that object into people key
+        }
     }
 }
 
