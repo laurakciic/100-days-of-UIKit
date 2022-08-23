@@ -17,6 +17,19 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         super.viewDidLoad()
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewPerson))
+        
+        // load the array back from disk when the app runs
+        let defaults = UserDefaults.standard
+        
+        if let savedPeople = defaults.object(forKey: "people") as? Data {           // using object(forKey:) to pull out people data and typecast it to Data instance
+            let jsonDecoder = JSONDecoder()                                         // instance of JSONDecoder
+            
+            do {
+                people = try jsonDecoder.decode([Person].self, from: savedPeople)   // give that to instance of JSONDecoder to invert that back to an object graph ie. array of people
+            } catch {                                                               // [Person].self - create an array of Person objects from this data 
+                print("Failed to load people.")
+            }
+        }
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -69,6 +82,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
         
         let person = Person(name: "Uknown", image: imageName)               // creates a new person instance
         people.append(person)                                               // to people array
+        save()
         collectionView.reloadData()
         
         dismiss(animated: true)                                             // dismiss topmost vc, not self
@@ -99,6 +113,7 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
             [weak self, weak ac] _ in                                       // will be passed in so it needs _/action
             guard let newName = ac?.textFields?[0].text else { return }     // read out text fields text and use it for our person's name
             person.name = newName
+            self?.save()
             self?.collectionView.reloadData()
         })
 
@@ -109,6 +124,17 @@ class ViewController: UICollectionViewController, UIImagePickerControllerDelegat
     func deletePerson(collectionView: UICollectionView, indexPath: IndexPath) {
         people.remove(at: indexPath.item)
         collectionView.deleteItems(at: [indexPath])
+    }
+    
+    func save() {
+        let jsonEncoder = JSONEncoder()
+        
+        if let savedData = try? jsonEncoder.encode(people) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "people")
+        } else {
+            print("Failed to save people")
+        }
     }
 }
 
