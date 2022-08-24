@@ -144,7 +144,9 @@ class ViewController: UIViewController {
         // append title to the existing text of current answer text field and put that new string back into the current answer
         currentAnswer.text = currentAnswer.text?.appending(buttonTitle)                                 // add buttonTitle to the currentAnswer
         activatedButtons.append(sender)                                                                 // add it to the activatedButtons array so we know it's been tapped
-        sender.isHidden = true                                                                          // hide it so the user can't tap it again
+        
+        //sender.isHidden = true                                                                        // hide it so the user can't tap it again
+        sender.alpha = 0.1                                                                              // hide it by fading 
     }
     
     @objc func submitTapped(_ sender: UIButton) {
