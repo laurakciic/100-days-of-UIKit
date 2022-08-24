@@ -12,6 +12,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var intensity: UISlider!
+    @IBOutlet var changeFilterBtn: UIButton!
     
     var currentImage: UIImage!
     
@@ -47,6 +48,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func changeFilter(_ sender: UIButton) {                           // sender must be from button not any, because Ipads need to know from where the method is called
+        
         let ac = UIAlertController(title: "Choose filter", message: nil, preferredStyle: .actionSheet)
         ac.addAction(UIAlertAction(title: "CIBumpDistortion", style: .default, handler: setFilter))
         ac.addAction(UIAlertAction(title: "CIGaussianBlur", style: .default, handler: setFilter))
@@ -70,6 +72,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         guard let actionTitle = action.title else { return }
         
         currentFilter = CIFilter(name: actionTitle)
+        changeFilterBtn.setTitle(actionTitle, for: .normal)
             
         let beginImage = CIImage(image: currentImage)
         currentFilter.setValue(beginImage, forKey: kCIInputImageKey)
