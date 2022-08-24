@@ -28,7 +28,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         currentFilter = CIFilter(name: "CISepiaTone")
     }
     
-    @objc func importPicture() {
+    @objc func importPicture(_ sender: UIAlertAction) {
         let picker = UIImagePickerController()
         picker.allowsEditing = true
         picker.delegate = self
@@ -78,7 +78,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func save(_ sender: Any) {
-        guard let image = imageView.image else { return }
+        guard let image = imageView.image else {
+            let ac = UIAlertController(title: "No Image Selected", message: "Please select an image from the library.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK!", style: .default, handler: importPicture))
+            present(ac, animated: true)
+            return
+        }
         
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
