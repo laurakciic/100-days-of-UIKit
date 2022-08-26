@@ -14,6 +14,7 @@ import UIKit
 class ViewController: UITableViewController {
 
     var images = [String]()
+    var viewCount: [String: Int] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +51,16 @@ class ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
-        cell.textLabel?.text = images[indexPath.row]                                                            // gives the text label of the cell the same text as a picture in our array
+        let image = images[indexPath.row]
+        cell.textLabel?.text = image                                                           // gives the text label of the cell the same text as a picture in our array
+        
+        if let count = viewCount[image] {
+            cell.textLabel?.text = "\(image) views: \(count)"                                  // detailTextLabel not showing
+            print("Views: \(count)")
+        } else {
+            cell.textLabel?.text = "\(image) views: 0"
+            print("Views: 0")
+        }
         
         return cell
     }
@@ -63,8 +73,23 @@ class ViewController: UITableViewController {
             vc.selectedImageNumber = indexPath.row + 1
             vc.totalImageCount     = images.count
             
+            if viewCount[vc.selectedImage!] != nil {
+                viewCount[vc.selectedImage!]! += 1
+            } else {
+                viewCount[vc.selectedImage!] = 1
+            }
             
+            UserDefaults.standard.set(viewCount, forKey: "viewCount")
+            tableView.reloadRows(at: [indexPath], with: .automatic)
             navigationController?.pushViewController(vc, animated: true)                                        // shows the screen, push the detail VC onto the navigation controller 
+        }
+    }
+    
+    private func loadUserDefaults() {
+        let defaults = UserDefaults.standard
+        
+        if let viewCount = defaults.object(forKey: "viewCount") as? [String: Int] {
+            self.viewCount = viewCount
         }
     }
     
