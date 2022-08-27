@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     var score         = 0
     var correctAnswer = 0
     var tapCounter    = 0
+    var highScore     = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +36,7 @@ class ViewController: UIViewController {
         btn2.layer.borderColor = UIColor.lightGray.cgColor
         btn3.layer.borderColor = UIColor.lightGray.cgColor
         
+        loadHighScore()
         askQuestion()
     }
 
@@ -60,13 +62,16 @@ class ViewController: UIViewController {
             tapCounter = 0
             
         }
-        
-        
+    }
+    
+    private func updateNavigationBarTitle() {
+        let country = countries[correctAnswer].uppercased()
+        title = "\(country) 🏅\(score)"
     }
     
     @IBAction func btnTapped(_ sender: UIButton) {
         var title: String
-        let correctFlag = countries[correctAnswer].capitalized
+        let correctFlag = countries[sender.tag].capitalized
         
         if sender.tag == correctAnswer {
             title = "Correct!"
@@ -89,6 +94,15 @@ class ViewController: UIViewController {
         present(scoreAlert, animated: true)     // 2 params: a view controller to present and whether to animate presentation, optional 3rd param to call a closure when pres animation finishes
     
         tapCounter += 1
+        
+        let ac = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: { _ in
+            if self.tapCounter < 10 {
+                self.askQuestion()
+            } else {
+                self.showFinalScore()
+            }
+        }))
     }
     
     @objc func showScore() {
@@ -97,6 +111,29 @@ class ViewController: UIViewController {
         showScoreAlert.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
         present(showScoreAlert, animated: true)
         
+    }
+    
+    private func loadHighScore() {
+        if let highScore = UserDefaults.standard.value(forKey: "highScore") as? Int {
+            self.highScore = highScore
+        }
+    }
+    
+    private func showFinalScore() {
+        if score > highScore {
+            highScore = score
+            UserDefaults.standard.set(highScore, forKey: "highScore")
+            title = "Game Over with new HighScore of \(highScore)!"
+        } else {
+            title = "Game Over"
+        }
+        
+        let ac = UIAlertController(title: title, message: "Your final score is \(score)", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "Play again", style: .default, handler: { _ in
+            self.score = 0
+            self.askQuestion()
+        }))
+        present(ac, animated: true)
     }
     
     
