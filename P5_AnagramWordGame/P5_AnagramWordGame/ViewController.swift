@@ -11,6 +11,7 @@ class ViewController: UITableViewController {
 
     var allWords  = [String]()
     var usedWords = [String]()
+    var currentWord: String = ""
     
     var errorTitle: String = ""
     var errorMessage: String = ""
@@ -32,12 +33,18 @@ class ViewController: UITableViewController {
         }
         
         startGame()
+        loadSavedData()
     }
 
 
     @objc func startGame() {
-        title = allWords.randomElement()                // title of VC
-        usedWords.removeAll(keepingCapacity: true)      // removes all values from usedWords array, bc it will be used to store user's answers, also making sure when new round comes up, old guesses are removed
+        currentWord = allWords.randomElement() ?? "swift"
+        title = currentWord                // title of VC
+        
+        UserDefaults.standard.set(currentWord, forKey: "currentWord")
+        usedWords.removeAll(keepingCapacity: true)      // remove all values from usedWords, bc it will be used to store user's answers, also making sure when new round comes up, old guesses are removed
+        UserDefaults.standard.set(usedWords, forKey: "usedWords")
+        
         tableView.reloadData()                          // reload all rows and sections - great for changing lvl's in game
     }
     
@@ -50,6 +57,22 @@ class ViewController: UITableViewController {
         cell.textLabel?.text = usedWords[indexPath.row]     // table View will show all the words user found so far, so as they find words, they'll be added to usedWords and appear on tableView straight away
         
         return cell
+    }
+    
+    private func loadSavedData() {
+        if let currentWord = UserDefaults.standard.value(forKey: "currentWord") as? String {
+            self.currentWord = currentWord
+            title = currentWord
+        } else {
+            startGame()
+        }
+        
+        if let usedWords = UserDefaults.standard.value(forKey: "usedWords") as? [String] {
+            self.usedWords = usedWords
+            tableView.reloadData()
+        } else {
+            startGame()
+        }
     }
     
     @objc func promptForAnswer() {
@@ -73,7 +96,8 @@ class ViewController: UITableViewController {
             if isOriginal(word: lowerAnswer) {                                  // not used before
                 if isReal(word: lowerAnswer)    {
                     usedWords.insert(answer, at: 0)                             // insert in usedWords array at 0 - top position of table view
-                    
+                    UserDefaults.standard.set(usedWords, forKey: "usedWords")
+                
                     let indexPath = IndexPath(row: 0, section: 0)               // ask table view to insert a row at that position - top
                     tableView.insertRows(at: [indexPath], with: .automatic)
                     
