@@ -31,6 +31,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         currentFilter = CIFilter(name: "CISepiaTone")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        imageView.alpha = 0
+    }
+    
     @objc func importPicture(_ sender: UIAlertAction) {
         let picker = UIImagePickerController()
         picker.allowsEditing = true
@@ -41,6 +46,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // when user selects a picture
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[.editedImage] as? UIImage else { return }        // pluck the image
+        
+        UIView.animate(withDuration: 5) {
+            self.imageView.alpha = 1
+        }
+        
         dismiss(animated: true)                                                 // dismiss imagePickerController
         currentImage = image                                                    // assign image to currentImage property so we can modiify it with filters
                                                                                 // - required so we have a copy of image that was imported
