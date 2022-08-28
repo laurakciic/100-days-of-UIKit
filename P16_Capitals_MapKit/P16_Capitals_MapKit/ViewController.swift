@@ -31,7 +31,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
         guard annotation is Capital else { return nil }
         
         let identifier = "Capital"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
         
         if annotationView == nil {
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
@@ -42,6 +42,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
         } else {
             annotationView?.annotation = annotation
         }
+        
+        annotationView?.pinTintColor = .cyan
         
         return annotationView
     }
