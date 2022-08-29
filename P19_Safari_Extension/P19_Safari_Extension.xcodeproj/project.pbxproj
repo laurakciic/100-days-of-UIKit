@@ -20,6 +20,7 @@
 		D36B2ADE28BCA3D5007AE97A /* Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D36B2ACF28BCA3D5007AE97A /* Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D36B2AE428BCB2F6007AE97A /* Action.js in Resources */ = {isa = PBXBuildFile; fileRef = D36B2AE328BCB2F6007AE97A /* Action.js */; };
 		D36B2AE628BCF034007AE97A /* Scripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B2AE528BCF034007AE97A /* Scripts.swift */; };
+		D36B2AE828BD0181007AE97A /* UserScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = D36B2AE728BD0181007AE97A /* UserScript.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		D36B2ADB28BCA3D5007AE97A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D36B2AE328BCB2F6007AE97A /* Action.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Action.js; sourceTree = "<group>"; };
 		D36B2AE528BCF034007AE97A /* Scripts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scripts.swift; sourceTree = "<group>"; };
+		D36B2AE728BD0181007AE97A /* UserScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserScript.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 			children = (
 				D36B2AD428BCA3D5007AE97A /* Media.xcassets */,
 				D36B2AD628BCA3D5007AE97A /* ActionViewController.swift */,
+				D36B2AE728BD0181007AE97A /* UserScript.swift */,
 				D36B2AE528BCF034007AE97A /* Scripts.swift */,
 				D36B2AD828BCA3D5007AE97A /* MainInterface.storyboard */,
 				D36B2ADB28BCA3D5007AE97A /* Info.plist */,
@@ -252,6 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D36B2AE828BD0181007AE97A /* UserScript.swift in Sources */,
 				D36B2AE628BCF034007AE97A /* Scripts.swift in Sources */,
 				D36B2AD728BCA3D5007AE97A /* ActionViewController.swift in Sources */,
 			);
