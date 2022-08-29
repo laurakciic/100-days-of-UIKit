@@ -16,6 +16,9 @@ class ActionViewController: UIViewController {
     var pageTitle = ""
     var pageUrl   = ""
 
+    // challenge 2
+    var savedScripts = [String: String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -48,8 +51,25 @@ class ActionViewController: UIViewController {
             }
         }
     }
+    
+    func loadSavedData() {
+        let defaults = UserDefaults.standard
+        savedScripts = defaults.object(forKey: "savedScripts") as? [String: String] ?? [String: String]()
+    }
+    
+    func updateUI() {
+        title = "Saved Scripts"
+        
+        if let scriptUrl = URL(string: pageUrl) {
+            if let host  = scriptUrl.host {
+                script.text = savedScripts[host]
+            }
+        }
+    }
 
     @IBAction func done() {
+        
+        self.saveScript()
         
         // bundling up to send back to the iOS (Safari)
         let item = NSExtensionItem()
@@ -91,5 +111,16 @@ class ActionViewController: UIViewController {
         }
         
         present(ac, animated: true)
+    }
+    
+    func saveScript() {
+        if let scriptUrl = URL(string: pageUrl) {
+            if let host  = scriptUrl.host {
+                savedScripts[host] = script.text
+                
+                let defaults = UserDefaults.standard
+                defaults.set(savedScripts, forKey: "savedScripts")
+            }
+        }
     }
 }
