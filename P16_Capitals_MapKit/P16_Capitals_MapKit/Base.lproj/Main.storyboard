@@ -41,6 +41,40 @@
             </objects>
             <point key="canvasLocation" x="1031.8840579710145" y="109.82142857142857"/>
         </scene>
+        <!--Detail Web View-->
+        <scene sceneID="teJ-1a-170">
+            <objects>
+                <viewController storyboardIdentifier="DetailWebView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Aa6-ot-DOQ" customClass="DetailWebView" customModule="P16_Capitals_MapKit" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8dO-ft-zyK">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q4v-51-Aev">
+                                <rect key="frame" x="-24" y="44" width="438" height="852"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="NSa-Uw-kXv"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Q4v-51-Aev" firstAttribute="trailing" secondItem="NSa-Uw-kXv" secondAttribute="trailing" id="0Y6-Ly-fAy"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Q4v-51-Aev" secondAttribute="bottom" constant="-34" id="3ym-n1-Vx2"/>
+                            <constraint firstItem="Q4v-51-Aev" firstAttribute="top" secondItem="NSa-Uw-kXv" secondAttribute="top" id="JNz-Yb-hmG"/>
+                            <constraint firstItem="Q4v-51-Aev" firstAttribute="leading" secondItem="8dO-ft-zyK" secondAttribute="leadingMargin" constant="-44" id="qte-DG-jr1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="detailWebView" destination="Q4v-51-Aev" id="fki-t2-0mp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zcB-mh-k2L" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1918.840579710145" y="109.82142857142857"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ra4-5a-Z1C">
             <objects>
