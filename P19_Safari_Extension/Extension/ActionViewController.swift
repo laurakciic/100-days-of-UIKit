@@ -25,7 +25,9 @@ class ActionViewController: UIViewController {
                 itemProvider.loadItem(forTypeIdentifier: kUTTypePropertyList as String) {   // asks itemProvider to provide us with item, closure - asynchronously
                     [weak self] (dict, error) in                                            // dict - what was provided to us by iOS
                     
-                    // do stuff
+                    guard let itemDictionary = dict as? NSDictionary else { return }        
+                    guard let javaScriptValues = itemDictionary [NSExtensionJavaScriptPreprocessingResultsKey] as? NSDictionary else { return }
+                    print(javaScriptValues)
                 }
             }
         }
