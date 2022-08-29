@@ -8,7 +8,7 @@
 import UserNotifications
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UNUserNotificationCenterDelegate {
 
     
     override func viewDidLoad() {
@@ -28,6 +28,8 @@ class ViewController: UIViewController {
     }
     
     @objc func scheduleLocal() {
+        registerCategories()
+        
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests()
         
@@ -42,11 +44,44 @@ class ViewController: UIViewController {
         dateComponents.hour   = 10
         dateComponents.minute = 30
 //        let trigger           = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        let trigger           = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)              
+        let trigger           = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         center.add(request)
+    }
+    
+    func registerCategories() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        let show = UNNotificationAction(identifier: "show", title: "Tell me more", options: .foreground)    // foreground - when this btn is tapped, launch this app imediately
+        let category = UNNotificationCategory(identifier: "alarm", actions: [show], intentIdentifiers: [])
+        
+        center.setNotificationCategories([category])
+    }
+    
+    // @escaping - can escape current method and be used later on
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // pull out buried user info dict
+        let userInfo = response.notification.request.content.userInfo
+        
+        if let customData = userInfo["customData"] as? String {         // read custom data key inside userInfo dict
+            print("Custom data received: \(customData)")
+            
+            switch response.actionIdentifier {
+            case UNNotificationDefaultActionIdentifier:
+                print("default identifier")                            // user swiped to unlock
+                
+            case "show":
+                print("Show more info.")
+                
+            default:
+                break
+            }
+        }
+        
+        completionHandler()
     }
 
 }
