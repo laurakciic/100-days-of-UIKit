@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  P18_Debugging
+//  P19_Safari_Extension
 //
 //  Created by Laura on 29.08.2022..
 //
@@ -11,9 +11,9 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-
+        // Do any additional setup after loading the view.
     }
+
 
 }
 
