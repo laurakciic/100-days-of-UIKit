@@ -17,7 +17,7 @@ class ActionViewController: UIViewController {
     var pageUrl   = ""
 
     // challenge 2
-    var savedScripts = [String: String]()
+    var savedScriptsByURL = [String: String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,7 +54,7 @@ class ActionViewController: UIViewController {
     
     func loadSavedData() {
         let defaults = UserDefaults.standard
-        savedScripts = defaults.object(forKey: "savedScripts") as? [String: String] ?? [String: String]()
+        savedScriptsByURL = defaults.object(forKey: "savedScripts") as? [String: String] ?? [String: String]()
     }
     
     func updateUI() {
@@ -62,7 +62,7 @@ class ActionViewController: UIViewController {
         
         if let scriptUrl = URL(string: pageUrl) {
             if let host  = scriptUrl.host {
-                script.text = savedScripts[host]
+                script.text = savedScriptsByURL[host]
             }
         }
     }
@@ -116,10 +116,10 @@ class ActionViewController: UIViewController {
     func saveScript() {
         if let scriptUrl = URL(string: pageUrl) {
             if let host  = scriptUrl.host {
-                savedScripts[host] = script.text
+                savedScriptsByURL[host] = script.text
                 
                 let defaults = UserDefaults.standard
-                defaults.set(savedScripts, forKey: "savedScripts")
+                defaults.set(savedScriptsByURL, forKey: "savedScripts")
             }
         }
     }
