@@ -12,7 +12,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        assert(slowMethod() == true, "Slow method returned false."
+        for i in 1...100 {
+            print("Number \(i)")
+        }
     }
 
 }
