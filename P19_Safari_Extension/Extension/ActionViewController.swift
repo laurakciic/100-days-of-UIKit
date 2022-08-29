@@ -20,6 +20,7 @@ class ActionViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+        navigationItem.leftBarButtonItem  = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(selectScript))
     
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -76,5 +77,19 @@ class ActionViewController: UIViewController {
         // make textView scroll down to show whatever user tapped on
         let selectedRange = script.selectedRange
         script.scrollRangeToVisible(selectedRange)
+    }
+    
+    @objc func selectScript() {
+        let ac = UIAlertController(title: "Example Scripts", message: nil, preferredStyle: .actionSheet)
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        
+        for (title, body) in scripts {
+            ac.addAction(UIAlertAction(title: title, style: .default) {
+                [weak self] _ in
+                self?.script.text = body
+            })
+        }
+        
+        present(ac, animated: true)
     }
 }
