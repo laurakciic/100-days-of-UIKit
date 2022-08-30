@@ -84,6 +84,7 @@ class ViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "DetailVC") as? DetailViewController {
             navigationController?.pushViewController(vc, animated: true)
+            vc.noteIndex = indexPath.row
             vc.notes     = notes
         }
     }

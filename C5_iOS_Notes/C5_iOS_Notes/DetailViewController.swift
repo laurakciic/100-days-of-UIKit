@@ -18,7 +18,13 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        loadToolBar()
         configureKeyboardObservers()
+        
+    }
+    
+    private func loadToolBar() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
     }
     
     private func configureKeyboardObservers() {
@@ -41,8 +47,8 @@ class DetailViewController: UIViewController {
         if notification.name == UIResponder.keyboardWillHideNotification {
             textView.contentInset = .zero
 
-            // hide done button when hiding keyboard
-            navigationItem.setRightBarButton(nil, animated: true)
+        // hide done & share button when hiding keyboard
+        navigationItem.setRightBarButton(nil, animated: true)
         } else {
             // If the keyboard is not hiding (it's visible) the bottom of the content inset will be the height of the keyboard
             textView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
@@ -82,5 +88,13 @@ class DetailViewController: UIViewController {
         } else {
             fatalError("Unable to save note.")
         }
+    }
+    
+    @objc func shareTapped() {
+        saveNote()
+        
+        let vc = UIActivityViewController(activityItems: [notes[noteIndex!].body], applicationActivities: [])
+        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(vc, animated: true)
     }
 }
