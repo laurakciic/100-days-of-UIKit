@@ -27,5 +27,14 @@ class ViewController: UITableViewController {
         
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let detailVC = storyboard?.instantiateViewController(withIdentifier: "DetailVC") as? DetailViewController {
+            detailVC.selectedNote = notes[indexPath.row]
+            
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
+    }
 }
 
