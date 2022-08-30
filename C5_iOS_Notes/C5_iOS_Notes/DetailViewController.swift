@@ -29,62 +29,32 @@ class DetailViewController: UIViewController {
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
-    @objc private func adjustForKeyboard(notification: Notification) {
-        // UIResponder.keyboardFrameEndUserInfoKey is the frame of the keyboard when its animation has finished
+    @objc private func adjustForKeyboard(notification: Notification) {        
+        // UIResponder.keyboardFrameEndUserInfoKey - frame of the keyboard when its animation has finished
         guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-                
-        // We take the size of the last frame of the kayboard (CGRect containing CGPoint and CGSize)
-        let keyboardScreenEndFrame = keyboardValue.cgRectValue
-            
-        // We need to convert the CGRect of the keyboard to our view's coordinate (Fix if the user rotate the device)
+
+        let keyboardScreenEndFrame = keyboardValue.cgRectValue  // size of the last frame of the keyboard (CGRect containing CGPoint and CGSize)
+
+        // convert CGRect of the keyboard to our view's coordinate (fix if the user rotates the device)
         let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, to: view.window)
-                
-        // If the keyboard has finished hiding the content inset of textView will be 0
+
         if notification.name == UIResponder.keyboardWillHideNotification {
-            textView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-            // Fix the scrolling indicator to not go below the keyboard
-            textView.scrollIndicatorInsets = .zero
-                    
-            // Hide done button when hiding keyboard
+            textView.contentInset = .zero
+
+            // hide done button when hiding keyboard
             navigationItem.setRightBarButton(nil, animated: true)
         } else {
             // If the keyboard is not hiding (it's visible) the bottom of the content inset will be the height of the keyboard
-            textView.contentInset = UIEdgeInsets(top: 20, left: 20, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom + 5.00, right: 20)
-            // Fix the scrolling indicator to not go below the keyboard
-            textView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
-                    
-            // Show Done button when showing keyboard
+            textView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
+
+            // Show done btn when showing keyboard
             navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(noteDone)), animated: true)
         }
-                
-        // selectedRange is where is the cursor
-        let selectedRange = textView.selectedRange
-        // Scroll the view to the cursor
-        textView.scrollRangeToVisible(selectedRange)
-        
-//        // UIResponder.keyboardFrameEndUserInfoKey - frame of the keyboard when its animation has finished
-//        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-//
-//        let keyboardScreenEndFrame = keyboardValue.cgRectValue  // size of the last frame of the keyboard (CGRect containing CGPoint and CGSize)
-//
-//        // convert CGRect of the keyboard to our view's coordinate (fix if the user rotates the device)
-//        let keyboardViewEndFrame = view.convert(keyboardScreenEndFrame, from: view.window)
-//
-//        if notification.name == UIResponder.keyboardWillHideNotification {
-//            textView.contentInset = .zero
-//
-//            // hide done button when hiding keyboard
-//            //navigationItem.setRightBarButton(nil, animated: true)
-//        } else {
-//            textView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardViewEndFrame.height - view.safeAreaInsets.bottom, right: 0)
-//
-//            navigationItem.setRightBarButton(UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(noteDone)), animated: true)
-//        }
-//
-//        textView.scrollIndicatorInsets = textView.contentInset
-//
-//        let selectedRange = textView.selectedRange              // selectedRange is where is the cursor is
-//        textView.scrollRangeToVisible(selectedRange)            // scroll the view to the cursor
+
+        textView.scrollIndicatorInsets = textView.contentInset
+
+        let selectedRange = textView.selectedRange              // selectedRange is where is the cursor is
+        textView.scrollRangeToVisible(selectedRange)            // scroll the view to the cursor
     }
     
     @objc private func noteDone() {
