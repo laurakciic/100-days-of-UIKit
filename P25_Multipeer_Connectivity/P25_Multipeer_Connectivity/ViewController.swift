@@ -20,9 +20,14 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
         super.viewDidLoad()
 
         title = "Selfie Share"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showConnectionPrompt))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(importPicture))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(sendMessage))
+        
+        let importPictureBtn = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(importPicture))
+        let sendMessageBtn   = UIBarButtonItem(title: "Chat", style: .plain, target: self, action: #selector(sendMessage))
+        navigationItem.rightBarButtonItems = [importPictureBtn, sendMessageBtn]
+        
+        let peerConnectedBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showConnectionPrompt))
+        let showPeersBtn     = UIBarButtonItem(title: "Peers", style: .plain, target: self, action: #selector(showConnectedPeers))
+        navigationItem.leftBarButtonItems = [peerConnectedBtn, showPeersBtn]
         
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         mcSession?.delegate = self      // tell us when something happened
@@ -105,6 +110,26 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
         ac.addAction(UIAlertAction(title: "Join a session", style: .default, handler: joinSession))
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         present(ac, animated: true)
+    }
+    
+    @objc func showConnectedPeers() {
+        guard let mcSession = mcSession else { return }
+        
+        if mcSession.connectedPeers.count == 0 {
+            let ac = UIAlertController(title: "There are no connected peers to this network.", message: nil, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            var peers = ""
+            
+            for (index, peer) in mcSession.connectedPeers.enumerated() {
+                peers += "\(index + 1). " + peer.displayName + "\n"
+            }
+            
+            let ac = UIAlertController(title: "Connected Peers", message: peers, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Close", style: .cancel))
+            present(ac, animated: true)
+        }
     }
     
     func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
