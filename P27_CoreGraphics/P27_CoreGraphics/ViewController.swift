@@ -15,7 +15,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        drawRectange()
+        //drawRectange()
+        //drawStar()
+        drawEmoji()
     }
 
     @IBAction func redrawTapped(_ sender: Any) {
@@ -43,6 +45,12 @@ class ViewController: UIViewController {
             
         case 5:
             drawImagesAndText()
+        
+        case 6:
+            drawEmoji()
+            
+        case 7:
+            drawStar()
             
         default:
             break
@@ -175,6 +183,66 @@ class ViewController: UIViewController {
         }
         
         imageView.image = image                                                            // put rendered image in imageView on UIView
+    }
+    
+    func drawEmoji() {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))      // canvas 512x512 points, also stores info how we want do draw
+        
+        let image = renderer.image { ctx in                                                // context parameter
+            // drawing code
+            let rectangle = CGRect(x: 0, y: 0, width: 512, height: 512).insetBy(dx: 5, dy: 5)
+            let smile = CGRect(x: 130, y: 350, width: 242, height: 10)
+            let leftEye = CGRect(x: 165, y: 150, width: 50, height: 80)
+            let rightEye = CGRect(x: 277, y: 150, width: 50, height: 80)
+            
+            ctx.cgContext.setFillColor(UIColor.systemYellow.cgColor)
+            ctx.cgContext.setStrokeColor(UIColor.black.cgColor)
+            ctx.cgContext.setLineWidth(6)                                                 // 10 point border around circle, centered on the edge of rect, 5 points inside, 5 points outside
+            
+            ctx.cgContext.addEllipse(in: rectangle)
+            ctx.cgContext.drawPath(using: .fill)                                          // fill circle and draw border
+            
+            ctx.cgContext.setFillColor(UIColor.black.cgColor)
+            ctx.cgContext.addEllipse(in: leftEye)
+            ctx.cgContext.drawPath(using: .fill)
+            
+            ctx.cgContext.setFillColor(UIColor.black.cgColor)
+            ctx.cgContext.addEllipse(in: rightEye)
+            ctx.cgContext.drawPath(using: .fill)
+            
+            ctx.cgContext.setFillColor(UIColor.black.cgColor)
+            ctx.cgContext.addEllipse(in: smile)
+            ctx.cgContext.drawPath(using: .fill)
+        }
+        
+        imageView.image = image                                                            // put rendered image in imageView on UIView
+    }
+    
+    func drawStar() {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))      // canvas 512x512 points, also stores info how we want do draw
+        
+        let img = renderer.image { ctx in
+            ctx.cgContext.translateBy(x: 256, y: 256)
+                    
+            let rotations = 5
+            let amount = (Double.pi) / 2.5
+                    
+            ctx.cgContext.rotate(by: .pi / 5.7)
+                    
+            ctx.cgContext.move(to: CGPoint(x: -11, y: 130))
+                    
+            for _ in 0 ..< rotations {
+                ctx.cgContext.addLine(to: CGPoint(x: -30, y: 30))
+                ctx.cgContext.addLine(to: CGPoint(x: -128, y: 30))
+                ctx.cgContext.rotate(by: CGFloat(amount))
+            }
+                    
+            ctx.cgContext.setFillColor(UIColor.yellow.cgColor)
+                    
+            ctx.cgContext.drawPath(using: .fill)
+        }
+                
+        imageView.image = img                                                          // put rendered image in imageView on UIView
     }
 }
 
