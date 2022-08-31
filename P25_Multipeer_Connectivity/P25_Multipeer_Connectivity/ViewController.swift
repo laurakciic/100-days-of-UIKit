@@ -8,13 +8,13 @@
 import MultipeerConnectivity
 import UIKit
 
-class ViewController: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate {
+class ViewController: UICollectionViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, MCSessionDelegate, MCBrowserViewControllerDelegate, MCNearbyServiceAdvertiserDelegate {
 
     var images = [UIImage]()
     
     var peerID = MCPeerID(displayName: UIDevice.current.name)           // how peer (person) is shown on other devices - get the name of current device
     var mcSession: MCSession?
-    var mcAdvertiserAssistant: MCAdvertiserAssistant?
+    var advertiser: MCNearbyServiceAdvertiser?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,15 +22,15 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
         title = "Selfie Share"
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showConnectionPrompt))
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(importPicture))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .reply, target: self, action: #selector(sendMessage))
         
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         mcSession?.delegate = self      // tell us when something happened
     }
     
     func startHosting(action: UIAlertAction) {
-        guard let mcSession = mcSession else { return }
-        mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: "laura-project25", discoveryInfo: nil, session: mcSession)
-        mcAdvertiserAssistant?.start()                                  // start looking connections to join to us
+        advertiser = MCNearbyServiceAdvertiser(peer: peerID, discoveryInfo: nil, serviceType: "laura-project25")
+        advertiser!.startAdvertisingPeer()
     }
     
     func joinSession(action: UIAlertAction) {
@@ -69,17 +69,34 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
         collectionView.reloadData()                                             // show it
         
         guard let mcSession = mcSession else { return }
+        
         if mcSession.connectedPeers.count > 0 {
             if let imageData = image.pngData() {
-                do {
-                    try? mcSession.send(imageData, toPeers: mcSession.connectedPeers, with: .reliable)  // reliable - will always get there
-                } catch {
-                    let ac = UIAlertController(title: "Send Error", message: error.localizedDescription, preferredStyle: .alert)
-                    ac.addAction(UIAlertAction(title: "OK", style: .default))
-                    present(ac, animated: true)
-                }
+                
+                // Send image data
+                try? mcSession.send(imageData, toPeers: mcSession.connectedPeers, with: .reliable)  // reliable - will always get there
             }
         }
+    }
+    
+    @objc func sendMessage() {
+        guard let mcSession = mcSession else { return }
+        
+        if mcSession.connectedPeers.count > 0 {
+            let ac = UIAlertController(title: "Send message", message: nil, preferredStyle: .alert)
+            ac.addTextField()
+            ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            ac.addAction(UIAlertAction(title: "Send", style: .default) { action in
+                guard ac.textFields?[0].text?.count != 0 else { return }
+                
+                let stringToSend = mcSession.myPeerID.displayName + ": " + (ac.textFields?[0].text)!
+                let stringData = Data(stringToSend.utf8)
+                
+                // Send string data
+                try? mcSession.send(stringData, toPeers: mcSession.connectedPeers, with: .reliable)
+            })
+        }
+
     }
     
     @objc func showConnectionPrompt() {
@@ -110,6 +127,10 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
         dismiss(animated: true)
     }
     
+    func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+        invitationHandler(true, mcSession)              // accepts every connection
+    }
+    
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {
         case .connected:
@@ -129,9 +150,16 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         DispatchQueue.main.async { [weak self] in
+            
             if let image = UIImage(data: data) {
                 self?.images.insert(image, at: 0)       // insert into images array
                 self?.collectionView.reloadData()
+            } else {
+                let message = String(decoding: data, as: UTF8.self)
+                
+                let ac = UIAlertController(title: "Message Received", message: message, preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default))
+                self?.present(ac, animated: true)
             }
         }
     }
