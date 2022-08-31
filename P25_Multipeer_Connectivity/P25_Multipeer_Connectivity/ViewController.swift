@@ -119,7 +119,8 @@ class ViewController: UICollectionViewController, UINavigationControllerDelegate
             print("Connecting: \(peerID.displayName)")
             
         case .notConnected:
-            print("Not Connected: \(peerID.displayName)")
+            let ac = UIAlertController(title: nil, message: "\(peerID.displayName) has disconnected.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Continue", style: .default))
             
         @unknown default:
             print("Uknown state received: \(peerID.displayName)")
