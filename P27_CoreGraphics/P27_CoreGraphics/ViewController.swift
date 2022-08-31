@@ -34,6 +34,13 @@ class ViewController: UIViewController {
         
         case 2:
             drawCheckerbord()
+            
+        case 3:
+            drawRotatedSquares()
+            
+        case 4:
+            drawLines()
+            
         default:
             break
         }
@@ -83,11 +90,61 @@ class ViewController: UIViewController {
             
             for row in 0 ..< 8 {
                 for col in 0 ..< 8 {
-                    if (row + col) % 2 == 0 {                                              // % 2 == 0 -> .isMultiple(of: 2), if there's a square that should be colored black 
+                    if (row + col) % 2 == 0 {                                              // % 2 == 0 -> .isMultiple(of: 2), if there's a square that should be colored black
                         ctx.cgContext.fill(CGRect(x: col * 64, y: row * 64, width: 64, height: 64))
                     }
                 }
             }
+        }
+        
+        imageView.image = image                                                            // put rendered image in imageView on UIView
+    }
+    
+    func drawRotatedSquares() {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))      // canvas 512x512 points, also stores info how we want do draw
+        
+        let image = renderer.image { ctx in                                                // context parameter
+            ctx.cgContext.translateBy(x: 256, y: 256)                                      // moves to center of canvas
+            
+            let rotations = 16
+            let amount = Double.pi / Double(rotations)                                     // 1/16
+            
+            for _ in 0 ..< rotations {
+                ctx.cgContext.rotate(by: CGFloat(amount))
+                ctx.cgContext.addRect(CGRect(x: -128, y: -128, width: 256, height: 256))
+            }
+            
+            ctx.cgContext.setStrokeColor(UIColor.black.cgColor)
+            ctx.cgContext.strokePath()
+        }
+        
+        imageView.image = image                                                            // put rendered image in imageView on UIView
+    }
+    
+    func drawLines() {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))      // canvas 512x512 points, also stores info how we want do draw
+        
+        let image = renderer.image { ctx in                                                // context parameter
+            ctx.cgContext.translateBy(x: 256, y: 256)
+            
+            var first = true
+            var length: CGFloat = 256
+            
+            for _ in 0 ..< 256 {
+                ctx.cgContext.rotate(by: .pi / 2)
+                
+                if first {
+                    ctx.cgContext.move(to: CGPoint(x: length, y: 50))
+                    first = false
+                } else {
+                    ctx.cgContext.addLine(to: CGPoint(x: length, y: 50))
+                }
+                
+                length *= 0.99                                                             // decrease line length
+            }
+            
+            ctx.cgContext.setStrokeColor(UIColor.black.cgColor)
+            ctx.cgContext.strokePath()
         }
         
         imageView.image = image                                                            // put rendered image in imageView on UIView
