@@ -15,21 +15,19 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //drawRectange()
-        //drawStar()
-        drawEmoji()
+        drawRectangle()
     }
 
     @IBAction func redrawTapped(_ sender: Any) {
         currentDrawType += 1
         
-        if currentDrawType > 5 {
+        if currentDrawType > 8 {
             currentDrawType = 0
         }
         
         switch currentDrawType {
         case 0:
-            drawRectange()
+            drawRectangle()
         
         case 1:
             drawCircle()
@@ -51,13 +49,16 @@ class ViewController: UIViewController {
             
         case 7:
             drawStar()
+        
+        case 8:
+            drawTwin()
             
         default:
             break
         }
     }
     
-    func drawRectange() {
+    func drawRectangle() {
         let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))      // canvas 512x512 points, also stores info how we want do draw
         
         let image = renderer.image { ctx in                                                // context parameter
@@ -243,6 +244,54 @@ class ViewController: UIViewController {
         }
                 
         imageView.image = img                                                          // put rendered image in imageView on UIView
+    }
+    
+    func drawTwin() {
+        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 512, height: 512))      // canvas 512x512 points, also stores info how we want do draw
+        
+        let img = renderer.image { ctx in
+            let rectangle = CGRect(x: 0, y: 0, width: 512, height: 512)
+                        
+            ctx.cgContext.setStrokeColor(UIColor.white.cgColor)
+            ctx.cgContext.setLineWidth(3)
+                        
+            let upperY = CGFloat(200)
+            let lowerY = CGFloat(350)
+            let startX = CGFloat(50)
+                        
+            // draw the T
+            ctx.cgContext.move(to: CGPoint(x: startX, y: upperY))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 130, y: upperY))
+            ctx.cgContext.move(to: CGPoint(x: startX + 65, y: upperY))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 65, y: lowerY))
+                        
+            // draw the W
+            ctx.cgContext.move(to: CGPoint(x: startX + 140, y: upperY))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 165, y: lowerY))
+            ctx.cgContext.move(to: CGPoint(x: startX + 165, y: lowerY))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 180, y: lowerY - 75))
+            ctx.cgContext.move(to: CGPoint(x: startX + 180, y: lowerY - 75))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 205, y: lowerY))
+            ctx.cgContext.move(to: CGPoint(x: startX + 205, y: lowerY))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 225, y: upperY))
+                        
+            // draw the I
+            ctx.cgContext.move(to: CGPoint(x: startX + 235, y: upperY))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 235, y: lowerY))
+                        
+            // draw the N
+            ctx.cgContext.move(to: CGPoint(x: startX + 245, y: lowerY))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 270, y: upperY))
+            ctx.cgContext.move(to: CGPoint(x: startX + 270, y: upperY))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 300, y: lowerY))
+            ctx.cgContext.move(to: CGPoint(x: startX + 300, y: lowerY))
+            ctx.cgContext.addLine(to: CGPoint(x: startX + 325, y: upperY))
+                        
+            ctx.cgContext.addRect(rectangle)
+            ctx.cgContext.drawPath(using: .fillStroke)
+        }
+                
+        imageView.image = img
     }
 }
 
