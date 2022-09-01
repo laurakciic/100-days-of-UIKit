@@ -19,17 +19,23 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
 
         loadToolBar()
+        showNote()
         configureKeyboardObservers()
-        
     }
     
     private func loadToolBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
     }
     
+    private func showNote() {
+        if let noteBody = note {
+            textView.text = noteBody.body
+        }
+    }
+    
     private func configureKeyboardObservers() {
         
-        // resize the textView when the keyboard shows or hides
+        // resize textView when depending on keyboard visibility
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
@@ -59,18 +65,18 @@ class DetailViewController: UIViewController {
 
         textView.scrollIndicatorInsets = textView.contentInset
 
-        let selectedRange = textView.selectedRange              // selectedRange is where is the cursor is
-        textView.scrollRangeToVisible(selectedRange)            // scroll the view to the cursor
+        let selectedRange = textView.selectedRange              // selectedRange - where is the cursor is
+        textView.scrollRangeToVisible(selectedRange)            // scroll view to the cursor
     }
     
     @objc private func noteDone() {
         
-        // Add note to the array of notes then save it
         if note != nil {
             note?.title = textView.text
+            note?.body = textView.text
             notes[noteIndex!] = note!
             saveNote()
-        } else if textView.text.count > 1 {
+        } else {
             let newNote = Note(title: textView.text, body: textView.text)
             notes.append(newNote)
             saveNote()

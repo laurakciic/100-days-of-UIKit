@@ -68,7 +68,6 @@ class ViewController: UITableViewController {
         } else {
             fatalError("Unable to update notes after deletion.")
         }
-        
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -85,6 +84,7 @@ class ViewController: UITableViewController {
         if let vc = storyboard?.instantiateViewController(withIdentifier: "DetailVC") as? DetailViewController {
             navigationController?.pushViewController(vc, animated: true)
             vc.noteIndex = indexPath.row
+            vc.note      = notes[indexPath.row]
             vc.notes     = notes
         }
     }
