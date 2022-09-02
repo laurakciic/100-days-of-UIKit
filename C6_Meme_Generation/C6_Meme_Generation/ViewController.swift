@@ -11,8 +11,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     @IBOutlet var imageView: UIImageView!
     
-    private var currentImage: UIImage!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,7 +24,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
     private func configureUI() {
         title = "Meme Maker"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(importImage))
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        let importBtn = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(importImage))
+        let shareBtn  = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareImage))
+        navigationItem.rightBarButtonItems = [importBtn, shareBtn]
     }
     
     @objc private func importImage(_ sender: Any) {
@@ -37,7 +39,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        imageView.image = info[.editedImage] as? UIImage
+        guard let image = info[.editedImage] as? UIImage else { return }
+        
+        imageView.image = image
         
         UIView.animate(withDuration: 0.1) {
             self.imageView.alpha = 1
@@ -45,5 +49,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         dismiss(animated: true)
     }
+    
+    @objc private func shareImage() {
+        
+    }
+
 }
 
