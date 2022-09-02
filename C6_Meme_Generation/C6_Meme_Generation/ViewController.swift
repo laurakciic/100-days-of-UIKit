@@ -117,7 +117,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @objc private func shareImage() {
+        guard let imageToSend = imageView.image else { return }
         
+        let ac = UIActivityViewController(activityItems: [imageToSend], applicationActivities: nil)
+        present(ac, animated: true)
     }
 
 }
