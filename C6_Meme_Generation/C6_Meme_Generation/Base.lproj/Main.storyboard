@@ -17,16 +17,42 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Dcb-F4-NIM">
-                                <rect key="frame" x="27" y="218" width="360" height="460"/>
+                                <rect key="frame" x="5.5" y="147.5" width="403" height="601"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VST-aK-hTT">
+                                <rect key="frame" x="56.5" y="108" width="301" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="rEa-hS-QTB"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Add Top Text"/>
+                                <connections>
+                                    <action selector="addTopText:" destination="BYZ-38-t0r" eventType="touchUpInside" id="b5j-br-4iZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCx-kl-1cn">
+                                <rect key="frame" x="56.5" y="748.5" width="301" height="47.5"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Add Bottom Text"/>
+                                <connections>
+                                    <action selector="addBottomText:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZbN-7X-esg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Dcb-F4-NIM" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="XzE-iP-i9W"/>
-                            <constraint firstItem="Dcb-F4-NIM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="27" id="mp3-Rw-DPw"/>
-                            <constraint firstItem="Dcb-F4-NIM" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="wH9-Gz-Omg"/>
-                            <constraint firstItem="Dcb-F4-NIM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="130" id="yGd-A9-42e"/>
+                            <constraint firstItem="VST-aK-hTT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="19u-u9-3VV"/>
+                            <constraint firstItem="Dcb-F4-NIM" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="59.5" id="HmE-4s-r5f"/>
+                            <constraint firstItem="kCx-kl-1cn" firstAttribute="top" secondItem="Dcb-F4-NIM" secondAttribute="bottom" id="LTP-G4-XtL"/>
+                            <constraint firstItem="VST-aK-hTT" firstAttribute="trailing" secondItem="kCx-kl-1cn" secondAttribute="trailing" id="O5e-7s-kg9"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="kCx-kl-1cn" secondAttribute="bottom" constant="66" id="bNZ-Um-ORX"/>
+                            <constraint firstItem="VST-aK-hTT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="56.5" id="bvs-uB-qmt"/>
+                            <constraint firstItem="VST-aK-hTT" firstAttribute="centerX" secondItem="Dcb-F4-NIM" secondAttribute="centerX" id="fHr-6f-08S"/>
+                            <constraint firstItem="Dcb-F4-NIM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="5.5" id="i5q-Wk-RTn"/>
+                            <constraint firstItem="VST-aK-hTT" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pSD-GN-0Sw"/>
+                            <constraint firstItem="Dcb-F4-NIM" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="sQX-Zm-t7l"/>
+                            <constraint firstItem="VST-aK-hTT" firstAttribute="leading" secondItem="kCx-kl-1cn" secondAttribute="leading" id="uG2-zS-gC1"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="BBb-9A-w4F"/>
