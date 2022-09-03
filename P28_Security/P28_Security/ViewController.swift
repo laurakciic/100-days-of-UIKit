@@ -5,6 +5,7 @@
 //  Created by Laura on 03.09.2022..
 //
 
+import LocalAuthentication
 import UIKit
 
 class ViewController: UIViewController {
@@ -62,7 +63,30 @@ class ViewController: UIViewController {
     }
 
     @IBAction func authenticateTapped(_ sender: Any) {
-        unlockSecretMessage()
+        let context = LAContext()                                                           // LocalAuthentication context
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            let reason = "Identify yourself"
+            
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { [weak self] success, authenticationError in
+                DispatchQueue.main.async {
+                    if success {
+                        self?.unlockSecretMessage()
+                    } else {
+                        //error
+                        let ac = UIAlertController(title: "Authetication error", message: "You could not be verified; please try again.", preferredStyle: .alert)
+                        ac.addAction(UIAlertAction(title: "OK", style: .default))
+                        self?.present(ac, animated: true)
+                    }
+                }
+            }
+        } else {
+            // no biometric
+            let ac = UIAlertController(title: "Biometry unavailable", message: "Device you are currently on does not support biometric authentication.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Got it", style: .default))
+            present(ac, animated: true)
+        }
     }
     
 }
