@@ -79,22 +79,7 @@ class ViewController: UIViewController {
                         self?.unlockSecretMessage()
                     } else {
                         //error
-                        let ac = UIAlertController(title: "Authentication error", message: "Face not recoginzed; enter password instead.", preferredStyle: .alert)
-                        ac.addTextField()
-                        let submitPassword = UIAlertAction(title: "Submit", style: .default) {
-                            [weak self, weak ac] _ in
-                            guard let password = ac?.textFields?[0].text else { return }
-                            
-                            if password == KeychainWrapper.standard.string(forKey: "SecretPassword") {
-                                self?.unlockSecretMessage()
-                            } else {
-                                let ac = UIAlertController(title: "Incorrect password", message: nil, preferredStyle: .alert)
-                                ac.addAction(UIAlertAction(title: "OK", style: .default))
-                                self?.present(ac, animated: true)
-                            }
-                        }
-                        ac.addAction(submitPassword)
-                        self?.present(ac, animated: true)
+                        self?.enterPassword()
                     }
                 }
             }
@@ -106,8 +91,23 @@ class ViewController: UIViewController {
         }
     }
     
-    private func submitPassword() {
-        
+    private func enterPassword() {
+        let ac = UIAlertController(title: "Authentication error", message: "Face not recoginzed; enter password instead.", preferredStyle: .alert)
+        ac.addTextField()
+        let submitPassword = UIAlertAction(title: "Submit", style: .default) {
+            [weak self, weak ac] _ in
+            guard let password = ac?.textFields?[0].text else { return }
+            
+            if password == KeychainWrapper.standard.string(forKey: "SecretPassword") {
+                self?.unlockSecretMessage()
+            } else {
+                let ac = UIAlertController(title: "Incorrect password", message: nil, preferredStyle: .alert)
+                ac.addAction(UIAlertAction(title: "OK", style: .default))
+                self?.present(ac, animated: true)
+            }
+        }
+        ac.addAction(submitPassword)
+        present(ac, animated: true)
     }
     
 }
