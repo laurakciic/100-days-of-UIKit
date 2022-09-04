@@ -8,5 +8,12 @@
 import UIKit
 
 class Card: NSObject {
-
+    
+    var name: String?
+    var isFlipped: Bool = false
+    var isMatch:   Bool = false
+    
+    init(name: String) {
+        self.name = name
+    }
 }

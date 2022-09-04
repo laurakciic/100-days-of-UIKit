@@ -12,4 +12,13 @@ class CardCell: UICollectionViewCell {
     @IBOutlet var frontCardView: UIImageView!
     @IBOutlet var backCardView: UIView!
     
+    var card: Card? {
+        didSet {
+            makeCard()
+        }
+    }
+    
+    private func makeCard() {
+        
+    }
 }
