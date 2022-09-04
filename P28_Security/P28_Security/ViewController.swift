@@ -17,10 +17,11 @@ class ViewController: UIViewController {
         
         title = "Nothing to see here"
 
-        configureKeyboardObservers()
+        KeychainWrapper.standard.set("password", forKey: "SecretPassword")
+        configureObservers()
     }
     
-    private func configureKeyboardObservers() {
+    private func configureObservers() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
@@ -78,8 +79,21 @@ class ViewController: UIViewController {
                         self?.unlockSecretMessage()
                     } else {
                         //error
-                        let ac = UIAlertController(title: "Authetication error", message: "You could not be verified; please try again.", preferredStyle: .alert)
-                        ac.addAction(UIAlertAction(title: "OK", style: .default))
+                        let ac = UIAlertController(title: "Authentication error", message: "Face not recoginzed; enter password instead.", preferredStyle: .alert)
+                        ac.addTextField()
+                        let submitPassword = UIAlertAction(title: "Submit", style: .default) {
+                            [weak self, weak ac] _ in
+                            guard let password = ac?.textFields?[0].text else { return }
+                            
+                            if password == KeychainWrapper.standard.string(forKey: "SecretPassword") {
+                                self?.unlockSecretMessage()
+                            } else {
+                                let ac = UIAlertController(title: "Incorrect password", message: nil, preferredStyle: .alert)
+                                ac.addAction(UIAlertAction(title: "OK", style: .default))
+                                self?.present(ac, animated: true)
+                            }
+                        }
+                        ac.addAction(submitPassword)
                         self?.present(ac, animated: true)
                     }
                 }
@@ -90,6 +104,10 @@ class ViewController: UIViewController {
             ac.addAction(UIAlertAction(title: "Got it", style: .default))
             present(ac, animated: true)
         }
+    }
+    
+    private func submitPassword() {
+        
     }
     
 }
