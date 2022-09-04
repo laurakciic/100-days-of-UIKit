@@ -7,13 +7,19 @@
 
 import UIKit
 
-class ViewController: UICollectionViewController {
+class ViewController: UIViewController {                // or CollectionViewController?
 
+    @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet var flipsLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
     }
 
+    @IBAction func newGameTapped(_ sender: Any) {
+    }
+    
 
 }
 

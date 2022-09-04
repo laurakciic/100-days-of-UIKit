@@ -47,6 +47,9 @@
                                     <buttonConfiguration key="configuration" style="plain" title="New Game">
                                         <fontDescription key="titleFontDescription" type="system" pointSize="20"/>
                                     </buttonConfiguration>
+                                    <connections>
+                                        <action selector="newGameTapped:" destination="TB3-9U-oGs" eventType="touchUpInside" id="O2Z-h1-PLi"/>
+                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -88,6 +91,10 @@
                                     </constraints>
                                 </collectionViewCellContentView>
                                 <size key="customSize" width="250" height="300"/>
+                                <connections>
+                                    <outlet property="backCardView" destination="O5T-Fv-PSn" id="9bX-S9-JY6"/>
+                                    <outlet property="frontCardView" destination="5Mt-xT-iSN" id="PjN-hm-YlZ"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -95,6 +102,10 @@
                             <outlet property="delegate" destination="TB3-9U-oGs" id="2pC-dc-2hj"/>
                         </connections>
                     </collectionView>
+                    <connections>
+                        <outlet property="collectionView" destination="Tpy-1f-4Aq" id="eB2-S4-e71"/>
+                        <outlet property="flipsLabel" destination="Tol-Hi-4g7" id="Vqn-Ga-DUE"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XFz-Km-fvL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
