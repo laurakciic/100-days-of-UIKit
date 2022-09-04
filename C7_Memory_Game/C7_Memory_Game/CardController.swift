@@ -9,7 +9,7 @@ import Foundation
 
 class CardController {
     
-    private static func fetchCards() -> [Card] {
+    static func fetchCards() -> [Card] {
         
         var cards = [Card]()
         var usedNumbers = [Int]()

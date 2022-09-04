@@ -39,17 +39,17 @@ class CardCell: UICollectionViewCell {
         }
     }
     
-    private func flip() {
+    func flip() {
         UIView.transition(from: backCardView, to: frontCardView, duration: 0.3, options: [.transitionFlipFromLeft, .showHideTransitionViews], completion: nil)
     }
     
-    private func flipBack() {
+    func flipBack() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
             UIView.transition(from: self.frontCardView, to: self.backCardView, duration: 0.3, options: [.transitionFlipFromRight, .showHideTransitionViews], completion: nil)
         }
     }
     
-    private func clearCards() {
+    func clearCards() {
         backCardView.alpha = 0
         
         UIView.animate(withDuration: 0.3, delay: 0.5, options: .curveEaseOut, animations: {
