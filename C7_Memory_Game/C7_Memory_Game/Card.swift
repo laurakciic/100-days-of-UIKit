@@ -9,7 +9,7 @@ import UIKit
 
 class Card: NSObject {
     
-    var name: String?
+    var name: String
     var isFlipped: Bool = false
     var isMatch:   Bool = false
     
