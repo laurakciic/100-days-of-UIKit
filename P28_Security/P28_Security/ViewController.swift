@@ -51,10 +51,13 @@ class ViewController: UIViewController {
         title = "Secret stuff"
         
         secretTextView.text = KeychainWrapper.standard.string(forKey: "SecretMsg") ?? ""    // try loading the key from keychain
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(saveSecretMessage))
     }
     
     @objc func saveSecretMessage() {
         guard secretTextView.isHidden == false else { return }                              // making sure secret is visible before running rest of the code
+        navigationItem.rightBarButtonItem = nil
         
         KeychainWrapper.standard.set(secretTextView.text, forKey: "SecretMsg")
         secretTextView.resignFirstResponder()                                               // make text view stop being active on the screen rn
